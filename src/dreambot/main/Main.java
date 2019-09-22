@@ -101,6 +101,10 @@ public class Main extends Provider{
                     });
                 }
             case IN_COMBAT:
+                // Anti-Ban goes here
+
+                sleepUntil(() -> !getLocalPlayer().isInCombat(), Walker.oneMinute * Calculations.random(3, 5));
+
                 // If no longer in combat and looting enabled, start looting
                 if (!getLocalPlayer().isInCombat()) {
                     if (getConfiguration().isLootBones() || getConfiguration().isLootCowHide() || getConfiguration().isLootMeat()) {
@@ -111,6 +115,8 @@ public class Main extends Provider{
 
                 break;
             case LOOTING:
+                log("Starting to looting process...");
+
                 // Pick up all of the dropped items
                 Arrays.stream(Cows.getGroundIds()).forEach(id -> {
                     if (
@@ -119,10 +125,13 @@ public class Main extends Provider{
                                     || (Cows.isMeat(id) && getConfiguration().isLootMeat())
                     ) {
                         try {
+                            log("Attempting to loot...");
                             getGroundItems().closest(x -> x.getID() == id).interact("Pick Up");
                         } catch (Exception e) {
                             // Someone could of picked it up already, skip over the item
                         }
+                    } else {
+                        log("Looting is disabled for item " + id + "...");
                     }
                 });
                 setScriptPosition(ScriptPosition.WAITING);
