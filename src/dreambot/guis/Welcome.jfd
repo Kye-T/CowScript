@@ -1,0 +1,159 @@
+JFDML JFormDesigner: "7.0.0.5.251" Java: "1.8.0_202-release" encoding: "UTF-8"
+
+new FormModel {
+	contentType: "form/swing"
+	root: new FormRoot {
+		add( new FormWindow( "javax.swing.JFrame", new FormLayoutManager( class org.jdesktop.layout.GroupLayout ) {
+			"$horizontalGroup": "par l {seq {par l {seq {space :::p, comp label3:::p::p, space ::235:x, comp label1:::p::p, space :::p, comp label2:::p::p}, seq {par l {seq l {space :p:40:p, par l {comp label7::l:p::p, comp label8::l:p::p, comp label13::l:p::p}, space :p:29:p, par l {comp camAngles:::p::p, comp exp:::p::p, seq l {comp sleeps:::p::p, space u:::p, comp label18:::p::p}}}, seq l {space :p:20:p, par l {comp label5:::p::p, comp label9::l:p::p, comp label15::l:p::p, seq {space :22:22:p, par l {comp label4::l:p::p, comp label11:::p::p, comp label10:::p::p, comp label12:::p::p, comp label14::l:p::p, comp label20::l:p::p}, space :p:94:p, par l {comp meat:::p::p, comp cowhide:::p::p, seq l {comp bones:::p::p, space u:::p, comp bury:::p::p, space s:::p, comp label17:::p::p}, seq l {par l {comp bank:::p::p, comp cook::l:p::p, comp heal::l:p::p}, space s:::p, par l {comp label16:::p::p, comp label19:::p::p, comp label21:::p::p}}}}}}, seq l {space :p:139:p, comp label6:::p::p}, seq l {space :p:136:p, comp button1:::p::p}}, space :0:22:x}}, space :::p}}"
+			"$verticalGroup": "par l {seq t {space :p:10:p, comp label6:::p::p, space s:::p, comp label5:::p::p, space :::p, par b {comp label7::b:p::p, comp camAngles::b:p::p}, par l {seq {space :::p, par b {comp label8::b:p::p, comp sleeps::b:p::p}}, seq l {space :p:5:p, comp label18:::p::p}}, space :::p, par b {comp label13::b:p::p, comp exp::b:p::p}, space s:::p, comp label9:::p::p, space u:::p, par t {seq {par l {seq l {comp label10:::p::p, space :::p, comp label11:::p::p, space :::p, comp label12:::p::p, space u:::p, comp label15:::p::p}, seq l {par l {comp bones::l:p::p, comp bury::l:p::p, comp label17::t:p::p}, space :::p, comp meat:::p::p, space :::p, comp cowhide:::p::p}}, space :::p, par l {seq {par l {comp cook:::p::p, comp label16:::p::p}, space :::p, par t {comp bank:::p::p, comp label19:::p::p}}, seq {comp label4:::p::p, space :::p, comp label14:::p::p}}, space u:::p, par l {comp label20:::p::p, comp heal:::p::p}}, comp label21:::p::p}, space ::20:x, comp button1:::p:53:p, space s:::p, par b {comp label2::b:p::p, comp label1::b:p::p, comp label3::b:p::p}, space :p:12:p}}"
+		} ) {
+			name: "this"
+			"title": "Cow Fighter V1.1"
+			"background": new java.awt.Color( 0, 0, 0, 255 )
+			add( new FormComponent( "javax.swing.JButton" ) {
+				name: "button1"
+				"text": "Go Kill Some Cows"
+				"foreground": &Color0 new java.awt.Color( 0, 135, 255, 255 )
+				"font": new java.awt.Font( "Segoe UI", 1, 22 )
+				addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "button1ActionPerformed", true ) )
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "label1"
+				"text": "Created using"
+				"font": &Font0 new java.awt.Font( "Segoe UI", 2, 10 )
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "label2"
+				"text": "DBE Wrapper"
+				"font": new java.awt.Font( "Segoe UI", 3, 10 )
+				"foreground": new java.awt.Color( 0, 135, 255, 255 )
+				"toolTipText": "Download Dreambot Easy Wrapper"
+				addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseClicked", "label2MouseClicked", true ) )
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "label3"
+				"text": "Cow Fighter V1.1 - DtohhM8"
+				"font": #Font0
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "label5"
+				"text": "Anti-Ban Configuration"
+				"font": &Font1 new java.awt.Font( "Segoe UI", 1, 12 )
+				"foreground": #Color0
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "label6"
+				"text": "Cow Fighter V1.1"
+				"foreground": #Color0
+				"font": new java.awt.Font( "Segoe UI", 1, 26 )
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "label7"
+				"text": "Change Camera Angles"
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "label8"
+				"text": "Long/Short Sleeps"
+			} )
+			add( new FormComponent( "javax.swing.JCheckBox" ) {
+				name: "camAngles"
+			} )
+			add( new FormComponent( "javax.swing.JCheckBox" ) {
+				name: "sleeps"
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "label9"
+				"text": "Looting Configuration"
+				"font": #Font1
+				"foreground": #Color0
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "label10"
+				"text": "Bones"
+			} )
+			add( new FormComponent( "javax.swing.JCheckBox" ) {
+				name: "bones"
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "label11"
+				"text": "Meat"
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "label12"
+				"text": "Cow Hide"
+			} )
+			add( new FormComponent( "javax.swing.JCheckBox" ) {
+				name: "meat"
+			} )
+			add( new FormComponent( "javax.swing.JCheckBox" ) {
+				name: "cowhide"
+			} )
+			add( new FormComponent( "javax.swing.JCheckBox" ) {
+				name: "bury"
+				"text": "Bury"
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "label13"
+				"text": "Check Experience"
+			} )
+			add( new FormComponent( "javax.swing.JCheckBox" ) {
+				name: "exp"
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "label4"
+				"text": "Cook Meat"
+			} )
+			add( new FormComponent( "javax.swing.JCheckBox" ) {
+				name: "cook"
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "label14"
+				"text": "Bank"
+			} )
+			add( new FormComponent( "javax.swing.JCheckBox" ) {
+				name: "bank"
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "label15"
+				"text": "Miscellaneous Configuration"
+				"font": #Font1
+				"foreground": #Color0
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "label16"
+				"text": "(Requires players lighting fires)"
+				"foreground": &Color1 new java.awt.Color( 204, 0, 0, 255 )
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "label17"
+				"text": "(Requires bone looting on)"
+				"foreground": #Color1
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "label18"
+				"text": "(Moves mouse off of screen)"
+				"foreground": #Color1
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "label19"
+				"text": "(Will bank all if no fire can be found en-route)"
+				"foreground": #Color1
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "label20"
+				"text": "Heal"
+			} )
+			add( new FormComponent( "javax.swing.JCheckBox" ) {
+				name: "heal"
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "label21"
+				"text": "(Will heal at 40% health)"
+				"foreground": #Color1
+			} )
+		}, new FormLayoutConstraints( null ) {
+			"location": new java.awt.Point( 0, 0 )
+			"size": new java.awt.Dimension( 515, 520 )
+		} )
+	}
+}
