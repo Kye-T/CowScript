@@ -1,7 +1,7 @@
 package dreambot.libs;
 
 import dreambot.main.Loader;
-import dreambot.main.Provider;
+import dreambot.main.Main;
 
 /**
  * Copyright (C) <2019>  <Kye-T>
@@ -10,8 +10,8 @@ import dreambot.main.Provider;
 
 abstract public class Library {
 
-    protected Provider getProvider() {
-        return Loader.script;
+    protected Main getProvider() {
+        return Loader.script.get();
     }
 
 }

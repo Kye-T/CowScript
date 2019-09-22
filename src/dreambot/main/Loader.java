@@ -14,7 +14,7 @@ import java.util.Optional;
  */
 
 public class Loader {
-    public static Provider script;
+    public static Reference<Main> script;
 
     public ArrayList<Class<? extends Library>> libs = new ArrayList<>(Arrays.asList(
             Walker.class,
@@ -24,14 +24,21 @@ public class Loader {
 
     public ArrayList<Library> libInstances = new ArrayList<>();
 
-    public Loader() throws InterruptedException {
+    private Configuration configuration;
+
+    public Loader(dreambot.main.Reference<Main> mainReference) {
+        script = mainReference;
 
         // Generate the Welcome GUI
         Welcome gui = new Welcome();
 
         // Waits for the GUI to notify us the user is ready to start
         synchronized (gui) {
-            gui.wait();
+            try {
+                gui.wait();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
 
         configuration = gui.getConfig();
@@ -39,8 +46,6 @@ public class Loader {
         // Lets build the libs we want to use in the script
         initLibs();
     }
-
-    private Configuration configuration;
 
     public void setConfiguration(Configuration c) {
         configuration = c;

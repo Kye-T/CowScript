@@ -39,16 +39,13 @@ import java.util.Arrays;
 
 public class Main extends Provider{
     private Walker walker;
-    private Fighting fighter = getHelper().getLibrary(Fighting.class);
+    private Fighting fighter;
 
     @Override
     public void onStart() {
-        try {
-            setProvider(new Loader());
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-            System.out.println("Well that was awkward...");
-        }
+        setProvider(new Loader(new Reference<>(this)));
+
+        fighter = getHelper().getLibrary(Fighting.class);
 
         /* If player is not yet at location, walk there unless bank is full */
         if (!(walker = getHelper().getLibrary(Walker.class)).isAtArea(getLocalPlayer().getTile())) {
