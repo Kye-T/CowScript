@@ -21,7 +21,7 @@ public abstract class Provider extends AbstractScript {
         return c;
     }
 
-    private HelperWrapper helper      = new HelperWrapper();
+    private HelperWrapper helper = new HelperWrapper();
     private ScriptPosition position   = ScriptPosition.WAITING;
 
     public void setProvider(Loader provider) {

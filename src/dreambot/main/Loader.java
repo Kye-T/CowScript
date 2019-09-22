@@ -48,10 +48,6 @@ public class Loader {
         initLibs();
     }
 
-    public void setConfiguration(Configuration c) {
-        configuration = c;
-    }
-
     /**
      * gets the configuration obtained by the welcome GUI
      * @return Configuration
@@ -73,8 +69,7 @@ public class Loader {
      */
 
     public <Library> Library getLibInstance(Class<? extends Library> lib) {
-        Optional<Object> library;
-        return (library = Arrays.stream(libInstances.toArray()).filter(o -> o.getClass() == lib).findFirst()).isPresent() ? lib.cast(library.get()) : null;
+        return lib.cast(libInstances.stream().filter(o -> o.getClass().equals(lib)).findFirst().get());
     }
 
     /**

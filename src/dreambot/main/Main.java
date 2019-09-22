@@ -45,11 +45,12 @@ public class Main extends Provider{
     public void onStart() {
         setProvider(new Loader(new Reference<>(this)));
 
-        fighter = getHelper().getLibrary(Fighting.class);
+        //fighter = getProvider().getLibInstance(Fighting.class);
+        fighter = getProvider().getLibInstance(Fighting.class);
 
         /* If player is not yet at location, walk there unless bank is full */
-        if (!(walker = getHelper().getLibrary(Walker.class)).isAtArea(getLocalPlayer().getTile())) {
-            walker.setTile(getInventory().isFull() ? getHelper().getLibrary(Banking.class).getBankLocation() : walker.getRandomTile());
+        if (!(walker = getProvider().getLibInstance(Walker.class)).isAtArea(getLocalPlayer().getTile())) {
+            walker.setTile(getInventory().isFull() ? getProvider().getLibInstance(Banking.class).getBankLocation() : walker.getRandomTile());
             setScriptPosition(ScriptPosition.WALKING);
         }
     }
@@ -68,14 +69,14 @@ public class Main extends Provider{
                     // If we hit the area and the inventory is full,
                     // we know we was going to the bank
                     if(getInventory().isFull())
-                        getHelper().getLibrary(Banking.class).bank();
+                        getProvider().getLibInstance(Banking.class).bank();
 
                     setScriptPosition(ScriptPosition.WAITING);
                 }
                 break;
             case WAITING:
                 if(getInventory().isFull()) {
-                    walker.setTile(getHelper().getLibrary(Banking.class).getBankLocation());
+                    walker.setTile(getProvider().getLibInstance(Banking.class).getBankLocation());
                     setScriptPosition(ScriptPosition.WALKING);
                     return Calculations.random(100, 300);
                 }
@@ -140,7 +141,7 @@ public class Main extends Provider{
     public boolean checkForFire() {
         if (getConfiguration().isCookMeat() && getInventory().contains(Arrays.stream(Cows.getIds()).filter(id -> Cows.isMeat(id)).findFirst())) {
             if (getGameObjects().closest(x -> x.getID() == Cooking.getFireId()) != null) {
-                return getHelper().getLibrary(Cooking.class).setPreviousAction(getPosition()).cook();
+                return getProvider().getLibInstance(Cooking.class).setPreviousAction(getPosition()).cook();
             }
         }
         return false;
