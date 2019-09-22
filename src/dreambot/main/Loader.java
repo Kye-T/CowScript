@@ -19,7 +19,8 @@ public class Loader {
     public ArrayList<Class<? extends Library>> libs = new ArrayList<>(Arrays.asList(
             Walker.class,
             Fighting.class,
-            Cooking.class
+            Cooking.class,
+            Banking.class
     ));
 
     public ArrayList<Library> libInstances = new ArrayList<>();
