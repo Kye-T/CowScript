@@ -12,7 +12,7 @@ public class HelperWrapper {
 
     public <Library> Library getLibrary(Class<? extends Library> lib) {
         Optional<Object> c;
-        return (c = Optional.of(helpers.stream().filter(x -> ((Helper) x).getName().equals(lib)).findFirst())).isPresent() ? lib.cast(((Helper) c.get()).getLib()) : null;
+        return (c = Optional.of(helpers.stream().filter(x -> x.getName().equals(lib)).findFirst())).isPresent() ? lib.cast(((Helper) c.get()).getLib()) : null;
     }
 
     public HelperWrapper addLibrary(Helper h) {
