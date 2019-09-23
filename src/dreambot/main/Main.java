@@ -66,7 +66,7 @@ public class Main extends Provider{
     @Override
     public int onLoop() {
         // Check for fire and inventory to be able to cook on
-        checkForFire();
+        searchForFire();
         // Update health in GUI
         gui.setHealth(getCombat().getHealthPercent() + "/" + getLocalPlayer().getHealthPercent() + "%");
         // Check for all possible script positions
@@ -160,7 +160,7 @@ public class Main extends Provider{
                 break;
             case COOKING:
                 // Re-check in case the fire has gone out
-                checkForFire();
+                searchForFire();
                 if(!getPosition().equals(ScriptPosition.COOKING)) {
                     return Calculations.random(100, 300);
                 }
@@ -183,30 +183,30 @@ public class Main extends Provider{
         gui.dispose();
     }
 
-    public void checkForFire() {
-        // We are already on-route
-        if(Cooking.getArea().contains(walker.getSetTile())) return;
+    public void searchForFire() {
+        // We are already on route or cooking is disabled
+        if(Cooking.getArea().contains(walker.getSetTile()) || !getConfiguration().isCookMeat()) return;
 
-        if (getConfiguration().isCookMeat()
-                && getInventory().contains(x -> x.getID() == Arrays.stream(Cows.getIds()).filter(id -> Cows.isMeat(id)).findFirst().getAsInt())
-                && getInventory().stream().filter(item -> item.getID() == Arrays.stream(Cows.getIds()).filter(id -> Cows.isMeat(id)).findFirst().getAsInt()).toArray().length >= Calculations.random(5, 12)
-        ) {
+        // We already have food we can use
+        if (getInventory().contains(x -> x.getID() == Cows.getCookedMeatId())) return;
+
+        int meatId = Arrays.stream(Cows.getIds()).filter(id -> Cows.isMeat(id)).findFirst().getAsInt();
+
+        if(getCombat().getHealthPercent() <= 40 && getInventory().contains(x -> x.getID() == meatId)) {
             gui.setCurrentTask("Searching for local fires...");
             cookMeat();
             return;
-        } else {
-            if(getConfiguration().isCookMeat()
-            && !getInventory().contains(x -> x.getID() == Cows.getCookedMeatId())
-            && getInventory().contains(x -> x.getID() == Arrays.stream(Cows.getIds()).filter(id -> Cows.isMeat(id)).findFirst().getAsInt())
-            && getCombat().getHealthPercent() <= 40) {
-                gui.setCurrentTask("Searching for local fires...");
-                cookMeat();
-                return;
-            }
         }
 
-        if(getPosition().equals(ScriptPosition.COOKING))
-            setScriptPosition(ScriptPosition.WAITING);
+        // Randomly search for fires if health isn't too low
+        if(getInventory().contains(x -> x.getID() == meatId) && getInventory().get(x -> x.getID() == meatId).getAmount() >= Calculations.random(3, 10)) {
+            gui.setCurrentTask("Searching for local fires...");
+            cookMeat();
+            return;
+        }
+
+        // If all else fails, we can just revert back to waiting
+        setScriptPosition(ScriptPosition.WAITING);
     }
 
     private void cookMeat() {
