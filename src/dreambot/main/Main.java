@@ -10,6 +10,7 @@ import org.dreambot.api.methods.Calculations;
 import org.dreambot.api.methods.map.Area;
 import org.dreambot.api.script.Category;
 import org.dreambot.api.script.ScriptManifest;
+import org.dreambot.api.wrappers.interactive.NPC;
 import org.dreambot.api.wrappers.items.GroundItem;
 import sun.font.Script;
 
@@ -53,6 +54,8 @@ public class Main extends Provider{
         gui = new Tracker().setUsername(getLocalPlayer().getName()).setHealth(getCombat().getHealthPercent() + "/" + getLocalPlayer().getHealthPercent() + "%");
         fighter = getProvider().getLibInstance(Fighting.class);
 
+        setScriptPosition(ScriptPosition.WAITING);
+
         /* If player is not yet at location, walk there unless bank is full */
         if (!(walker = getProvider().getLibInstance(Walker.class)).isAtArea(getLocalPlayer().getTile())) {
             walker.setTile(getInventory().isFull() ? getProvider().getLibInstance(Banking.class).getBankLocation() : walker.getRandomTile());
@@ -73,6 +76,7 @@ public class Main extends Provider{
         switch (getPosition()) {
             case WALKING:
                 gui.setCurrentTask("Walking to task...");
+                sleep(300, 500);
                 if (!walker.isAtArea(areaWalkingTo, walker.getSetTile())) walker.walk();
                 else {
                     // If we hit the area and the inventory is full,
@@ -86,47 +90,34 @@ public class Main extends Provider{
                 }
                 break;
             case WAITING:
+                // Check if we should bank
                 if(getInventory().isFull()) {
                     gui.setCurrentTask("Initiating banking...");
                     walker.setTile(getProvider().getLibInstance(Banking.class).getBankLocation());
                     setScriptPosition(ScriptPosition.WALKING);
-                    return Calculations.random(100, 300);
+                    break;
                 }
+
                 // Double check the player is not already in combat
                 if (getLocalPlayer().isInCombat()) {
-                    gui.setCurrentTask("Switching to combat...");
-                    sleep(300, 500);
                     setScriptPosition(ScriptPosition.IN_COMBAT);
+                    break;
                 }
 
-                int c = 0;
-
-                // If NPC can be found in, and around the area, then lets attack it
-                while (getPosition().equals(ScriptPosition.WAITING)) {
-                    if(c++ >= 5) {
-                        walker.setTile(walker.getRandomTile());
-                        setScriptPosition(ScriptPosition.WALKING);
-                        break;
-                    }
-                    gui.setCurrentTask("Searching for a cow...");
-                    // Find a random cow ID
-                    int npcId = Arrays.stream(Cows.getIds()).findAny().getAsInt();
-                    // Look for NPC in area and attack it
-                    getNpcs().all().stream().filter(npc -> !npc.isInCombat() && npc.getID() == npcId && npc.isOnScreen()).findAny().ifPresent(npc -> {
-                        if (!fighter.setNpc(npc).attack()) {
-                            // Someone beat us too it, lets move away to make it look less suspicious randomly
-                            if (Calculations.random(0, 100) >= 50) {
-                                gui.setCurrentTask("Initiating random walk cycle...");
-                                walker.setTile(walker.getRandomTile());
-                                setScriptPosition(ScriptPosition.WALKING);
-                                return;
-                            }
-                        }
-                        // One was found, lets move to the combat script
-                        else setScriptPosition(ScriptPosition.IN_COMBAT);
-                    });
-                    sleep(300, 500);
+                // Find a Cow
+                NPC cow;
+                gui.setCurrentTask("Searching for a Cow...");
+                if((cow = getNpcs().closest(x -> x.getID() == Arrays.stream(Cows.getIds()).findAny().getAsInt())) != null) {
+                    cow.interact("Attack");
+                    setScriptPosition(ScriptPosition.IN_COMBAT);
+                    break;
                 }
+
+                gui.setCurrentTask("Could not find a Cow...");
+                sleep(200, 300);
+                // Walk back to the training area
+                walker.setTile(walker.getRandomTile());
+                setScriptPosition(ScriptPosition.WALKING);
                 break;
             case IN_COMBAT:
                 heal();
