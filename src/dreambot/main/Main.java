@@ -125,7 +125,6 @@ public class Main extends Provider{
                         // One was found, lets move to the combat script
                         else setScriptPosition(ScriptPosition.IN_COMBAT);
                     });
-
                     sleep(300, 500);
                 }
             case IN_COMBAT:
@@ -177,7 +176,7 @@ public class Main extends Provider{
                 // Cook
                 getProvider().getLibInstance(Cooking.class).setPreviousAction(getPosition()).cook();
                 // If we have ran out of meat, then go back to cooking
-                if(!getInventory().contains(Arrays.stream(Cows.getIds()).filter(id -> Cows.isMeat(id)).findFirst()))
+                if(!getInventory().contains(x -> x.getID() == Cows.getMeat()))
                     setScriptPosition(ScriptPosition.WAITING);
                 break;
         }
