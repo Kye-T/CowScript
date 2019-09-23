@@ -3,6 +3,8 @@ package dreambot.libs;
 import dreambot.data.Cows;
 import dreambot.main.ScriptPosition;
 import org.dreambot.api.methods.Calculations;
+import org.dreambot.api.methods.map.Area;
+import org.dreambot.api.methods.map.Tile;
 
 import java.util.Arrays;
 
@@ -10,11 +12,26 @@ public class Cooking extends Library {
 
     private final static int fireId = 26185;
 
+    private final static Area searchArea = new Area(
+            new Tile(3257, 3230, 0),
+            new Tile(3250, 3230, 0),
+            new Tile(3250, 3251, 0),
+            new Tile(3257, 3249, 0)
+    );
+
     private ScriptPosition pa;
 
     public Cooking setPreviousAction(ScriptPosition pa) {
         this.pa = pa;
         return this;
+    }
+
+    public static Area getArea() {
+        return searchArea;
+    }
+
+    public static Tile getSearchTile() {
+        return searchArea.getRandomTile();
     }
 
     public boolean cook() {

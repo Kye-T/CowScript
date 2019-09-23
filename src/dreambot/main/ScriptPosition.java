@@ -5,4 +5,5 @@ public enum ScriptPosition {
     WALKING,
     IN_COMBAT,
     LOOTING,
+    COOKING,
 }

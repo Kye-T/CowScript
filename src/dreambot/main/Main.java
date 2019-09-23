@@ -57,9 +57,7 @@ public class Main extends Provider{
     @Override
     public int onLoop() {
         // Check for fire and inventory to be able to cook on
-        if (checkForFire())
-            // If we did, keep cooking until done
-            return Calculations.random(100, 300);
+        checkForFire();
         // Check for all possible script positions
         switch (getPosition()) {
             case WALKING:
@@ -130,6 +128,14 @@ public class Main extends Provider{
                 });
                 setScriptPosition(ScriptPosition.WAITING);
                 break;
+            case COOKING:
+                // Re-check in case the fire has gone out
+                checkForFire();
+                getProvider().getLibInstance(Cooking.class).setPreviousAction(getPosition()).cook();
+                // If we have ran out of meat, then go back to cooking
+                if(!getInventory().contains(Arrays.stream(Cows.getIds()).filter(id -> Cows.isMeat(id)).findFirst()))
+                    setScriptPosition(ScriptPosition.WAITING);
+                break;
         }
 
         // Return short delay
@@ -141,26 +147,41 @@ public class Main extends Provider{
 
     }
 
-    public boolean checkForFire() {
+    public void checkForFire() {
+        // We are already on-route
+        if(Cooking.getArea().contains(walker.getSetTile())) return;
+
         if (getConfiguration().isCookMeat()
                 && getInventory().contains(Arrays.stream(Cows.getIds()).filter(id -> Cows.isMeat(id)).findFirst())
                 && getInventory().stream().filter(item -> item.getID() == Arrays.stream(Cows.getIds()).filter(id -> Cows.isMeat(id)).findFirst().getAsInt()).toArray().length >= Calculations.random(5, 12)
         ) {
-            if (getGameObjects().closest(x -> x.getID() == Cooking.getFireId()) != null) {
-                return getProvider().getLibInstance(Cooking.class).setPreviousAction(getPosition()).cook();
-            }
+            cookMeat();
+            return;
         } else {
             if(getConfiguration().isCookMeat()
-            // TODO("Check no cooked meat")
+            && !getInventory().contains(x -> x.getID() == Cows.getCookedMeatId())
             && getInventory().contains(Arrays.stream(Cows.getIds()).filter(id -> Cows.isMeat(id)).findFirst())
             && getCombat().getHealthPercent() <= 40) {
-                // TODO("Add walk to behind Goblins to look for a fire")
-                if (getGameObjects().closest(x -> x.getID() == Cooking.getFireId()) != null) {
-                    return getProvider().getLibInstance(Cooking.class).setPreviousAction(getPosition()).cook();
-                }
+                cookMeat();
+                return;
             }
         }
-        return false;
+
+        if(getPosition().equals(ScriptPosition.COOKING))
+            setScriptPosition(ScriptPosition.WAITING);
+    }
+
+    private void cookMeat() {
+        // Walk to the area if not there
+        if(!walker.isAtArea(Cooking.getArea(), getLocalPlayer().getTile())) {
+            walker.setTile(Cooking.getSearchTile());
+            setScriptPosition(ScriptPosition.WALKING);
+            return;
+        }
+
+        if (getGameObjects().closest(x -> x.getID() == Cooking.getFireId()) != null) {
+            setScriptPosition(ScriptPosition.COOKING);
+        }
     }
 
 }

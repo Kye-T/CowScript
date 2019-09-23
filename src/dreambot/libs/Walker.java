@@ -22,6 +22,11 @@ public class Walker extends Library {
         return this;
     }
 
+
+    public Tile getSetTile() {
+        return t;
+    }
+
     public void walk() {
         getProvider().getWalking().walk(t);
         getProvider().sleepUntil(() -> !getProvider().getLocalPlayer().isMoving(), oneHour);
@@ -33,6 +38,9 @@ public class Walker extends Library {
 
     public boolean isAtArea(Tile t) {
         return area.contains(t);
+    }
+    public boolean isAtArea(Area a, Tile t) {
+        return a.contains(t);
     }
 
     public Tile getRandomTile() {
