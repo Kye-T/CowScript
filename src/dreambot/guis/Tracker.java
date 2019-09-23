@@ -28,8 +28,6 @@ public class Tracker extends JFrame {
         label4 = new JLabel();
         label5 = new JLabel();
         label7 = new JLabel();
-        label8 = new JLabel();
-        label9 = new JLabel();
 
         //======== this ========
         setTitle("Cow Fighter V1.0");
@@ -58,12 +56,6 @@ public class Tracker extends JFrame {
         //---- label7 ----
         label7.setText("Foo");
 
-        //---- label8 ----
-        label8.setText("Attemtpts:");
-
-        //---- label9 ----
-        label9.setText("0");
-
         GroupLayout contentPaneLayout = new GroupLayout(contentPane);
         contentPane.setLayout(contentPaneLayout);
         contentPaneLayout.setHorizontalGroup(
@@ -81,19 +73,14 @@ public class Tracker extends JFrame {
                             .addComponent(label7, GroupLayout.DEFAULT_SIZE, 298, Short.MAX_VALUE)
                             .addContainerGap())
                         .addGroup(GroupLayout.Alignment.TRAILING, contentPaneLayout.createSequentialGroup()
-                            .addGroup(contentPaneLayout.createParallelGroup()
-                                .addComponent(label1)
-                                .addComponent(label3))
-                            .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
-                            .addGroup(contentPaneLayout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
-                                .addGroup(contentPaneLayout.createSequentialGroup()
-                                    .addComponent(label2, GroupLayout.PREFERRED_SIZE, 297, GroupLayout.PREFERRED_SIZE)
-                                    .addContainerGap())
-                                .addComponent(label4, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addComponent(label1)
+                            .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 48, Short.MAX_VALUE)
+                            .addComponent(label2, GroupLayout.PREFERRED_SIZE, 297, GroupLayout.PREFERRED_SIZE)
+                            .addContainerGap())
                         .addGroup(contentPaneLayout.createSequentialGroup()
-                            .addComponent(label8)
-                            .addGap(18, 18, 18)
-                            .addComponent(label9, GroupLayout.DEFAULT_SIZE, 304, Short.MAX_VALUE))))
+                            .addComponent(label3)
+                            .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 180, Short.MAX_VALUE)
+                            .addComponent(label4, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         contentPaneLayout.setVerticalGroup(
             contentPaneLayout.createParallelGroup()
@@ -108,15 +95,11 @@ public class Tracker extends JFrame {
                     .addGroup(contentPaneLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                         .addComponent(label1)
                         .addComponent(label2))
-                    .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                    .addGroup(contentPaneLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                        .addComponent(label8)
-                        .addComponent(label9))
-                    .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                     .addGroup(contentPaneLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                         .addComponent(label3)
                         .addComponent(label4, GroupLayout.PREFERRED_SIZE, 16, GroupLayout.PREFERRED_SIZE))
-                    .addContainerGap(116, Short.MAX_VALUE))
+                    .addContainerGap(150, Short.MAX_VALUE))
         );
         pack();
         setLocationRelativeTo(getOwner());
@@ -133,16 +116,10 @@ public class Tracker extends JFrame {
         return this;
     }
 
-    private int attempts = 1;
+    //private int attempts = 1;
 
     public Tracker setCurrentTask(String task) {
-        if(label2.getText().equalsIgnoreCase(task))
-            label9.setText(String.valueOf(attempts++));
-        else {
-            label2.setText(task);
-            attempts = 1;
-            label9.setText(String.valueOf(attempts));
-        }
+        label2.setText(task);
         return this;
     }
 
@@ -155,7 +132,5 @@ public class Tracker extends JFrame {
     private JLabel label4;
     private JLabel label5;
     private JLabel label7;
-    private JLabel label8;
-    private JLabel label9;
     // JFormDesigner - End of variables declaration  //GEN-END:variables
 }

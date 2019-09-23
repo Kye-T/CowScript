@@ -119,6 +119,7 @@ public class Main extends Provider{
                 gui.setCurrentTask("Could not find a Cow...");
                 sleep(200, 300);
                 // Walk back to the training area
+                areaWalkingTo = walker.getRandomTile().getArea(3);
                 walker.setTile(walker.getRandomTile());
                 setScriptPosition(ScriptPosition.WALKING);
                 break;
