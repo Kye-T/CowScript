@@ -98,8 +98,16 @@ public class Main extends Provider{
                     sleep(300, 500);
                     setScriptPosition(ScriptPosition.IN_COMBAT);
                 }
+
+                int c = 0;
+
                 // If NPC can be found in, and around the area, then lets attack it
                 while (getPosition().equals(ScriptPosition.WAITING)) {
+                    if(c++ >= 5) {
+                        walker.setTile(walker.getRandomTile());
+                        setScriptPosition(ScriptPosition.WALKING);
+                        break;
+                    }
                     gui.setCurrentTask("Searching for a cow...");
                     // Find a random cow ID
                     int npcId = Arrays.stream(Cows.getIds()).findAny().getAsInt();
@@ -111,6 +119,7 @@ public class Main extends Provider{
                                 gui.setCurrentTask("Initiating random walk cycle...");
                                 walker.setTile(walker.getRandomTile());
                                 setScriptPosition(ScriptPosition.WALKING);
+                                return;
                             }
                         }
                         // One was found, lets move to the combat script
