@@ -12,7 +12,6 @@ import org.dreambot.api.script.Category;
 import org.dreambot.api.script.ScriptManifest;
 import org.dreambot.api.wrappers.interactive.NPC;
 import org.dreambot.api.wrappers.items.GroundItem;
-import sun.font.Script;
 
 import java.util.Arrays;
 
@@ -62,6 +61,8 @@ public class Main extends Provider{
             areaWalkingTo = getInventory().isFull() ? getProvider().getLibInstance(Banking.class).getBankLocation().getArea(3) : walker.getRandomTile().getArea(3);
             setScriptPosition(ScriptPosition.WALKING);
         }
+
+        getSkillTracker().start();
     }
 
     private Area areaWalkingTo;
@@ -70,6 +71,9 @@ public class Main extends Provider{
     public int onLoop() {
         // Looks like the walker instance doesn't get updated with current API
         walker = getProvider().getLibInstance(Walker.class);
+
+        // Update GUI with SkillTracker
+        gui.updateXp(getSkillTracker());
 
         // Check for fire and inventory to be able to cook on
         searchForFire();

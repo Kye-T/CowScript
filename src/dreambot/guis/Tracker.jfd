@@ -4,8 +4,8 @@ new FormModel {
 	contentType: "form/swing"
 	root: new FormRoot {
 		add( new FormWindow( "javax.swing.JFrame", new FormLayoutManager( class org.jdesktop.layout.GroupLayout ) {
-			"$horizontalGroup": "par l {seq {space :::p, par l {seq t {space :0:0:x, comp label6:::p::p, space :p:87:p}, seq l {comp label5:::p::p, space :p:18:p, comp label7::::298:x, space :::p}, seq t {par l {comp label1::l:p::p, comp label3::l:p::p}, space ::37:x, par l:::p {comp label2::::297:x, comp label4::::297:x}, space :::p}}}}"
-			"$verticalGroup": "par l {seq l {space :::p, comp label6:::p::p, space :p:9:p, par b {comp label7::b:p::p, comp label5::b:p::p}, space :::p, par b {comp label1::b:p::p, comp label2::b:p::p}, space :::p, par b {comp label3::b:p::p, comp label4::b:p:16:p}, space ::150:x}}"
+			"$horizontalGroup": "par l {seq {space :::p, par l {seq l {par t {comp label10:::p::p, comp label5:::p::p}, space :p:18:p, par l {comp label2:::p:214:p, comp label7:::p:215:p, comp label4::l:p:214:p}, space :::x}, seq {par l {comp label1::l:p::p, comp label3::l:p::p, seq l {space :p:22:p, par l {comp label12:::p::p, comp label11:::p::p, comp label13::l:p::p, comp label14::l:p::p, comp label15::l:p::p}}}, space :0:219:x}}}, seq {par l {seq l {space :p:44:p, comp label6:::p::p}, seq l {space :p:109:p, par l {seq {space :6:6:p, par t {seq t {comp label20:::p::p, space :18:18:p, comp label21:::p::p, space :18:18:p, comp label22:::p::p, space :18:18:p, comp label23:::p::p}, seq t {comp label16:::p::p, space s:::p, comp label17:::p::p, space s:::p, comp label18:::p::p, space s:::p, comp label19:::p::p}, seq t {comp label32:::p::p, space :18:18:p, comp label33:::p::p, space :18:18:p, comp label34:::p::p, space :18:18:p, comp label35:::p::p}, par l:t {seq l {comp label24:::p::p, space :18:18:p, comp label25:::p::p, space :18:18:p, comp label26:::p::p, space :18:18:p, comp label27:::p::p}, seq l {comp label28:::p::p, space :18:18:p, comp label29:::p::p, space :18:18:p, comp label30:::p::p, space :18:18:p, comp label31:::p::p}}, seq t {comp label36:::p::p, space :18:18:p, comp label37:::p::p, space :18:18:p, comp label38:::p::p, space :18:18:p, comp label39:::p::p}}}, comp label9:::p::p}}}, space :0:47:x}}"
+			"$verticalGroup": "par l {seq l {space :::p, comp label6:::p::p, space :p:9:p, par b {comp label5::b:p::p, comp label7::b:p::p}, space :::p, par b {comp label1::b:p::p, comp label2::b:p::p}, space :::p, par b {comp label3::b:p::p, comp label4::b:p:16:p}, space :p:12:p, comp label9:::p::p, space u:::p, par l {seq {comp label10:::p::p, space u:::p, comp label11:::p::p, space u:::p, comp label12:::p::p, space u:::p, comp label13:::p::p, space u:::p, comp label14:::p::p, space u:::p, comp label15:::p::p, space :0:0:x}, seq {par l {seq t {par b {comp label16::b:p::p, comp label17::b:p::p, comp label18::b:p::p, comp label19::b:p::p}, space :28:28:p}, par l:t {comp label20:::p::p, comp label21:::p::p, comp label22:::p::p, comp label23:::p::p}}, space ::14:x, par l {comp label24:::p::p, comp label25:::p::p, comp label26:::p::p, comp label27:::p::p}, space u:::p, par l {comp label28:::p::p, comp label29:::p::p, comp label30:::p::p, comp label31:::p::p}, space u:::p, par l {comp label32:::p::p, comp label33:::p::p, comp label34:::p::p, comp label35:::p::p}, space u:::p, par l {comp label36:::p::p, comp label37:::p::p, comp label38:::p::p, comp label39:::p::p}}}, space :::p}}"
 		} ) {
 			name: "this"
 			"title": "Cow Fighter V1.0"
@@ -29,7 +29,7 @@ new FormModel {
 			} )
 			add( new FormComponent( "javax.swing.JLabel" ) {
 				name: "label4"
-				"text": "0%"
+				"text": "0/0%"
 			} )
 			add( new FormComponent( "javax.swing.JLabel" ) {
 				name: "label5"
@@ -39,9 +39,135 @@ new FormModel {
 				name: "label7"
 				"text": "Foo"
 			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "label9"
+				"text": "XP Status"
+				"font": new java.awt.Font( "Segoe UI", 1, 16 )
+				"foreground": new java.awt.Color( 0, 135, 255, 255 )
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "label10"
+				"text": "Attack"
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "label11"
+				"text": "Strength"
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "label12"
+				"text": "Defence"
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "label13"
+				"text": "Hit Points"
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "label14"
+				"text": "Cooking"
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "label15"
+				"text": "Prayer"
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "label16"
+				"text": "0/h"
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "label17"
+				"text": "0 (+0)"
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "label18"
+				"text": "+0"
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "label19"
+				"text": "0"
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "label20"
+				"text": "0/h"
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "label21"
+				"text": "0 (+0)"
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "label22"
+				"text": "+0"
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "label23"
+				"text": "0"
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "label24"
+				"text": "0/h"
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "label25"
+				"text": "0 (+0)"
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "label26"
+				"text": "+0"
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "label27"
+				"text": "0"
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "label28"
+				"text": "0/h"
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "label29"
+				"text": "0 (+0)"
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "label30"
+				"text": "+0"
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "label31"
+				"text": "0"
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "label32"
+				"text": "0/h"
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "label33"
+				"text": "0 (+0)"
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "label34"
+				"text": "+0"
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "label35"
+				"text": "0"
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "label36"
+				"text": "0/h"
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "label37"
+				"text": "0 (+0)"
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "label38"
+				"text": "+0"
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "label39"
+				"text": "0"
+			} )
 		}, new FormLayoutConstraints( null ) {
-			"location": new java.awt.Point( 0, 0 )
-			"size": new java.awt.Dimension( 400, 300 )
+			"location": new java.awt.Point( 5, 0 )
+			"size": new java.awt.Dimension( 315, 360 )
 		} )
 	}
 }
