@@ -45,7 +45,6 @@ public class Main extends Provider{
     public void onStart() {
         setProvider(new Loader(new Reference<>(this)));
 
-        //fighter = getProvider().getLibInstance(Fighting.class);
         fighter = getProvider().getLibInstance(Fighting.class);
 
         /* If player is not yet at location, walk there unless bank is full */
@@ -143,9 +142,21 @@ public class Main extends Provider{
     }
 
     public boolean checkForFire() {
-        if (getConfiguration().isCookMeat() && getInventory().contains(Arrays.stream(Cows.getIds()).filter(id -> Cows.isMeat(id)).findFirst())) {
+        if (getConfiguration().isCookMeat()
+                && getInventory().contains(Arrays.stream(Cows.getIds()).filter(id -> Cows.isMeat(id)).findFirst())
+                && getInventory().stream().filter(item -> item.getID() == Arrays.stream(Cows.getIds()).filter(id -> Cows.isMeat(id)).findFirst().getAsInt()).toArray().length >= Calculations.random(5, 12)
+        ) {
             if (getGameObjects().closest(x -> x.getID() == Cooking.getFireId()) != null) {
                 return getProvider().getLibInstance(Cooking.class).setPreviousAction(getPosition()).cook();
+            }
+        } else {
+            if(getConfiguration().isCookMeat()
+            && getInventory().contains(Arrays.stream(Cows.getIds()).filter(id -> Cows.isMeat(id)).findFirst())
+            && getCombat().getHealthPercent() <= 40) {
+                // TODO("Add walk to behind Goblins to look for a fire")
+                if (getGameObjects().closest(x -> x.getID() == Cooking.getFireId()) != null) {
+                    return getProvider().getLibInstance(Cooking.class).setPreviousAction(getPosition()).cook();
+                }
             }
         }
         return false;
