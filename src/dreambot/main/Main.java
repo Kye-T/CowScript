@@ -190,16 +190,14 @@ public class Main extends Provider{
         // We already have food we can use
         if (getInventory().contains(x -> x.getID() == Cows.getCookedMeatId())) return;
 
-        int meatId = Arrays.stream(Cows.getIds()).filter(id -> Cows.isMeat(id)).findFirst().getAsInt();
-
-        if(getCombat().getHealthPercent() <= 40 && getInventory().contains(x -> x.getID() == meatId)) {
+        if(getCombat().getHealthPercent() <= 40 && getInventory().contains(x -> x.getID() == Cows.getMeat())) {
             gui.setCurrentTask("Searching for local fires...");
             cookMeat();
             return;
         }
 
         // Randomly search for fires if health isn't too low
-        if(getInventory().contains(x -> x.getID() == meatId) && getInventory().get(x -> x.getID() == meatId).getAmount() >= Calculations.random(3, 10)) {
+        if(getInventory().contains(x -> x.getID() == Cows.getMeat()) && getInventory().get(x -> x.getID() == Cows.getMeat()).getAmount() >= Calculations.random(3, 10)) {
             gui.setCurrentTask("Searching for local fires...");
             cookMeat();
             return;

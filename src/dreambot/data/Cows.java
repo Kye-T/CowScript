@@ -3,6 +3,19 @@ package dreambot.data;
 public class Cows {
 
     private final static int bones = 526;
+
+    public static int getBones() {
+        return bones;
+    }
+
+    public static int getMeat() {
+        return meat;
+    }
+
+    public static int getCowHide() {
+        return cowHide;
+    }
+
     private final static int meat = 2132;
     private final static int cowHide = 1739;
 
