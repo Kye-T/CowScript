@@ -111,8 +111,8 @@ public class Tracker extends JFrame {
         return this;
     }
 
-    public Tracker setHealth(int h) {
-        label4.setText(String.valueOf(h));
+    public Tracker setHealth(String h) {
+        label4.setText(h);
         return this;
     }
 

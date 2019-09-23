@@ -10,6 +10,7 @@ import org.dreambot.api.methods.Calculations;
 import org.dreambot.api.methods.map.Area;
 import org.dreambot.api.script.Category;
 import org.dreambot.api.script.ScriptManifest;
+import org.dreambot.api.wrappers.items.GroundItem;
 import sun.font.Script;
 
 import java.util.Arrays;
@@ -49,7 +50,7 @@ public class Main extends Provider{
     public void onStart() {
         setProvider(new Loader(new Reference<>(this)));
 
-        gui = new Tracker().setUsername(getLocalPlayer().getName()).setHealth(getLocalPlayer().getHealthPercent());
+        gui = new Tracker().setUsername(getLocalPlayer().getName()).setHealth(getCombat().getHealthPercent() + "/" + getLocalPlayer().getHealthPercent() + "%");
         fighter = getProvider().getLibInstance(Fighting.class);
 
         /* If player is not yet at location, walk there unless bank is full */
@@ -67,7 +68,7 @@ public class Main extends Provider{
         // Check for fire and inventory to be able to cook on
         checkForFire();
         // Update health in GUI
-        gui.setHealth(getLocalPlayer().getHealthPercent());
+        gui.setHealth(getCombat().getHealthPercent() + "/" + getLocalPlayer().getHealthPercent() + "%");
         // Check for all possible script positions
         switch (getPosition()) {
             case WALKING:
@@ -97,7 +98,7 @@ public class Main extends Provider{
                     setScriptPosition(ScriptPosition.IN_COMBAT);
                 }
                 // If NPC can be found in, and around the area, then lets attack it
-                while (!getPosition().equals(ScriptPosition.IN_COMBAT)) {
+                while (!getPosition().equals(ScriptPosition.IN_COMBAT) || !getPosition().equals(ScriptPosition.WALKING)) {
                     gui.setCurrentTask("Searching for a cow...");
                     // Find a random cow ID
                     int npcId = Arrays.stream(Cows.getIds()).findAny().getAsInt();
@@ -139,7 +140,9 @@ public class Main extends Provider{
                                     || (Cows.isMeat(id) && getConfiguration().isLootMeat())
                     ) {
                         try {
-                            getGroundItems().closest(x -> x.getID() == id).interact("Take");
+                            GroundItem item;
+                            (item = getGroundItems().closest(x -> x.getID() == id)).interact("Take");
+                            sleepUntil(() -> !getLocalPlayer().isMoving() && getInventory().contains(item), Walker.oneSecond * Calculations.random(5, 13));
                         } catch (Exception e) {
                             // Someone could of picked it up already, skip over the item
                         }
@@ -176,24 +179,19 @@ public class Main extends Provider{
         // We are already on-route
         if(Cooking.getArea().contains(walker.getSetTile())) return;
 
-        gui.setCurrentTask("Searching for local fires...");
-        sleep(100, 300);
-
         if (getConfiguration().isCookMeat()
-                && getInventory().contains(Arrays.stream(Cows.getIds()).filter(id -> Cows.isMeat(id)).findFirst())
+                && getInventory().contains(Arrays.stream(Cows.getIds()).filter(id -> Cows.isMeat(id)).findFirst().getAsInt())
                 && getInventory().stream().filter(item -> item.getID() == Arrays.stream(Cows.getIds()).filter(id -> Cows.isMeat(id)).findFirst().getAsInt()).toArray().length >= Calculations.random(5, 12)
         ) {
-            gui.setCurrentTask("Attempting to cook...");
-            sleep(100, 300);
+            gui.setCurrentTask("Searching for local fires...");
             cookMeat();
             return;
         } else {
             if(getConfiguration().isCookMeat()
             && !getInventory().contains(x -> x.getID() == Cows.getCookedMeatId())
-            && getInventory().contains(Arrays.stream(Cows.getIds()).filter(id -> Cows.isMeat(id)).findFirst())
-            && getLocalPlayer().getHealthPercent() <= 40) {
+            && getInventory().contains(Arrays.stream(Cows.getIds()).filter(id -> Cows.isMeat(id)).findFirst().getAsInt())
+            && getCombat().getHealthPercent() <= 40) {
                 gui.setCurrentTask("Searching for local fires...");
-                sleep(100, 300);
                 cookMeat();
                 return;
             }
