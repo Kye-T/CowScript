@@ -1,6 +1,7 @@
 package dreambot.main;
 
 import dreambot.data.Cows;
+import dreambot.guis.Tracker;
 import dreambot.libs.Banking;
 import dreambot.libs.Cooking;
 import dreambot.libs.Fighting;
@@ -8,6 +9,7 @@ import dreambot.libs.Walker;
 import org.dreambot.api.methods.Calculations;
 import org.dreambot.api.script.Category;
 import org.dreambot.api.script.ScriptManifest;
+import sun.font.Script;
 
 import java.util.Arrays;
 
@@ -40,11 +42,13 @@ import java.util.Arrays;
 public class Main extends Provider{
     private Walker walker;
     private Fighting fighter;
+    private Tracker gui;
 
     @Override
     public void onStart() {
         setProvider(new Loader(new Reference<>(this)));
 
+        gui = new Tracker();
         fighter = getProvider().getLibInstance(Fighting.class);
 
         /* If player is not yet at location, walk there unless bank is full */
@@ -61,27 +65,34 @@ public class Main extends Provider{
         // Check for all possible script positions
         switch (getPosition()) {
             case WALKING:
+                gui.setCurrentTask("Walking to task...");
                 if (!walker.isAtTile()) walker.walk();
                 else {
                     // If we hit the area and the inventory is full,
                     // we know we was going to the bank
-                    if(getInventory().isFull())
+                    if(getInventory().isFull()) {
+                        gui.setCurrentTask("Initiating banking...");
                         getProvider().getLibInstance(Banking.class).bank();
+                    }
 
                     setScriptPosition(ScriptPosition.WAITING);
                 }
                 break;
             case WAITING:
                 if(getInventory().isFull()) {
+                    gui.setCurrentTask("Initiating banking...");
                     walker.setTile(getProvider().getLibInstance(Banking.class).getBankLocation());
                     setScriptPosition(ScriptPosition.WALKING);
                     return Calculations.random(100, 300);
                 }
                 // Double check the player is not already in combat
-                if (getLocalPlayer().isInCombat())
+                if (getLocalPlayer().isInCombat()) {
+                    gui.setCurrentTask("Switching to combat...");
                     setScriptPosition(ScriptPosition.IN_COMBAT);
+                }
                 // If NPC can be found in, and around the area, then lets attack it
                 while (!getPosition().equals(ScriptPosition.IN_COMBAT)) {
+                    gui.setCurrentTask("Searching for a cow...");
                     // Find a random cow ID
                     int npcId = Arrays.stream(Cows.getIds()).findAny().getAsInt();
                     // Look for NPC in area and attack it
@@ -89,6 +100,7 @@ public class Main extends Provider{
                         if (!fighter.setNpc(npc).attack()) {
                             // Someone beat us too it, lets move away to make it look less suspicious randomly
                             if (Calculations.random(0, 100) >= 50) {
+                                gui.setCurrentTask("Initiating random walk cycle...");
                                 walker.setTile(walker.getRandomTile());
                                 setScriptPosition(ScriptPosition.WALKING);
                             }
@@ -99,7 +111,7 @@ public class Main extends Provider{
                 }
             case IN_COMBAT:
                 // Anti-Ban goes here
-
+                gui.setCurrentTask("In combat with a Cow...");
                 sleepUntil(() -> !getLocalPlayer().isInCombat(), Walker.oneMinute * Calculations.random(3, 5));
 
                 // If no longer in combat and looting enabled, start looting
@@ -112,6 +124,7 @@ public class Main extends Provider{
 
                 break;
             case LOOTING:
+                gui.setCurrentTask("Looting cow remains...");
                 // Pick up all of the dropped items
                 Arrays.stream(Cows.getGroundIds()).forEach(id -> {
                     if (
@@ -131,6 +144,11 @@ public class Main extends Provider{
             case COOKING:
                 // Re-check in case the fire has gone out
                 checkForFire();
+                if(!getPosition().equals(ScriptPosition.COOKING)) {
+                    return Calculations.random(100, 300);
+                }
+                gui.setCurrentTask("Cooking Cow meat for food...");
+                // Cook
                 getProvider().getLibInstance(Cooking.class).setPreviousAction(getPosition()).cook();
                 // If we have ran out of meat, then go back to cooking
                 if(!getInventory().contains(Arrays.stream(Cows.getIds()).filter(id -> Cows.isMeat(id)).findFirst()))
@@ -144,12 +162,15 @@ public class Main extends Provider{
 
     @Override
     public void onExit() {
-
+        gui.setVisible(false);
+        gui.dispose();
     }
 
     public void checkForFire() {
         // We are already on-route
         if(Cooking.getArea().contains(walker.getSetTile())) return;
+
+        gui.setCurrentTask("Searching for local fires...");
 
         if (getConfiguration().isCookMeat()
                 && getInventory().contains(Arrays.stream(Cows.getIds()).filter(id -> Cows.isMeat(id)).findFirst())
@@ -174,6 +195,7 @@ public class Main extends Provider{
     private void cookMeat() {
         // Walk to the area if not there
         if(!walker.isAtArea(Cooking.getArea(), getLocalPlayer().getTile())) {
+            gui.setCurrentTask("Walking to any local fire area...");
             walker.setTile(Cooking.getSearchTile());
             setScriptPosition(ScriptPosition.WALKING);
             return;
