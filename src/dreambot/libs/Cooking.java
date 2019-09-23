@@ -5,6 +5,7 @@ import dreambot.main.ScriptPosition;
 import org.dreambot.api.methods.Calculations;
 import org.dreambot.api.methods.map.Area;
 import org.dreambot.api.methods.map.Tile;
+import org.dreambot.api.utilities.impl.Condition;
 import org.dreambot.api.wrappers.interactive.GameObject;
 
 import java.util.Arrays;
@@ -39,9 +40,11 @@ public class Cooking extends Library {
         try {
             GameObject fire = getProvider().getGameObjects().closest(x -> x.getID() == fireId);
 
+            Condition condition = () -> !getProvider().getLocalPlayer().isMoving();
+
             if(fire != null) {
                 getProvider().getWalking().walkOnScreen(fire.getTile());
-                getProvider().sleepUntil(() -> !getProvider().getLocalPlayer().isMoving(), Walker.oneSecond * Calculations.random(4, 9));
+                getProvider().sleepUntil(condition, Walker.oneSecond * Calculations.random(4, 9));
             }
 
             try {
@@ -51,6 +54,8 @@ public class Cooking extends Library {
                 // Fire could of tarnished
             }
 
+            getProvider().sleepUntil(condition, Walker.oneSecond * Calculations.random(4, 11));
+            getProvider().sleep(500, 1000);
             getProvider().sleepUntil(() -> !getProvider().getLocalPlayer().isAnimating(), Walker.oneSecond * Calculations.random(8, 19));
             getProvider().setScriptPosition(pa);
             return true;
