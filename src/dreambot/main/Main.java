@@ -127,6 +127,7 @@ public class Main extends Provider{
                     });
                     sleep(300, 500);
                 }
+                break;
             case IN_COMBAT:
                 heal();
 
