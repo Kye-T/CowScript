@@ -7,6 +7,7 @@ import dreambot.libs.Cooking;
 import dreambot.libs.Fighting;
 import dreambot.libs.Walker;
 import org.dreambot.api.methods.Calculations;
+import org.dreambot.api.methods.map.Area;
 import org.dreambot.api.script.Category;
 import org.dreambot.api.script.ScriptManifest;
 import sun.font.Script;
@@ -54,9 +55,12 @@ public class Main extends Provider{
         /* If player is not yet at location, walk there unless bank is full */
         if (!(walker = getProvider().getLibInstance(Walker.class)).isAtArea(getLocalPlayer().getTile())) {
             walker.setTile(getInventory().isFull() ? getProvider().getLibInstance(Banking.class).getBankLocation() : walker.getRandomTile());
+            areaWalkingTo = getInventory().isFull() ? getProvider().getLibInstance(Banking.class).getBankLocation().getArea(3) : walker.getRandomTile().getArea(3);
             setScriptPosition(ScriptPosition.WALKING);
         }
     }
+
+    private Area areaWalkingTo;
 
     @Override
     public int onLoop() {
@@ -66,7 +70,7 @@ public class Main extends Provider{
         switch (getPosition()) {
             case WALKING:
                 gui.setCurrentTask("Walking to task...");
-                if (!walker.isAtTile()) walker.walk();
+                if (!walker.isAtArea(areaWalkingTo, walker.getSetTile())) walker.walk();
                 else {
                     // If we hit the area and the inventory is full,
                     // we know we was going to the bank
@@ -177,6 +181,8 @@ public class Main extends Provider{
                 && getInventory().contains(Arrays.stream(Cows.getIds()).filter(id -> Cows.isMeat(id)).findFirst())
                 && getInventory().stream().filter(item -> item.getID() == Arrays.stream(Cows.getIds()).filter(id -> Cows.isMeat(id)).findFirst().getAsInt()).toArray().length >= Calculations.random(5, 12)
         ) {
+            gui.setCurrentTask("Attempting to cook...");
+            sleep(100, 300);
             cookMeat();
             return;
         } else {
@@ -184,6 +190,8 @@ public class Main extends Provider{
             && !getInventory().contains(x -> x.getID() == Cows.getCookedMeatId())
             && getInventory().contains(Arrays.stream(Cows.getIds()).filter(id -> Cows.isMeat(id)).findFirst())
             && getLocalPlayer().getHealthPercent() <= 40) {
+                gui.setCurrentTask("Searching for local fires...");
+                sleep(100, 300);
                 cookMeat();
                 return;
             }
@@ -198,6 +206,7 @@ public class Main extends Provider{
         if(!walker.isAtArea(Cooking.getArea(), getLocalPlayer().getTile())) {
             gui.setCurrentTask("Walking to any local fire area...");
             walker.setTile(Cooking.getSearchTile());
+            areaWalkingTo = Cooking.getSearchTile().getArea(3);
             setScriptPosition(ScriptPosition.WALKING);
             return;
         }
