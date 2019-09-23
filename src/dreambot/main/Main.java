@@ -95,10 +95,11 @@ public class Main extends Provider{
                 // Double check the player is not already in combat
                 if (getLocalPlayer().isInCombat()) {
                     gui.setCurrentTask("Switching to combat...");
+                    sleep(300, 500);
                     setScriptPosition(ScriptPosition.IN_COMBAT);
                 }
                 // If NPC can be found in, and around the area, then lets attack it
-                while (!getPosition().equals(ScriptPosition.IN_COMBAT) || !getPosition().equals(ScriptPosition.WALKING)) {
+                while (getPosition().equals(ScriptPosition.WAITING)) {
                     gui.setCurrentTask("Searching for a cow...");
                     // Find a random cow ID
                     int npcId = Arrays.stream(Cows.getIds()).findAny().getAsInt();
@@ -115,6 +116,8 @@ public class Main extends Provider{
                         // One was found, lets move to the combat script
                         else setScriptPosition(ScriptPosition.IN_COMBAT);
                     });
+
+                    sleep(300, 500);
                 }
             case IN_COMBAT:
                 // Anti-Ban goes here

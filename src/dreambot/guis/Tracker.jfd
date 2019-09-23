@@ -4,8 +4,8 @@ new FormModel {
 	contentType: "form/swing"
 	root: new FormRoot {
 		add( new FormWindow( "javax.swing.JFrame", new FormLayoutManager( class org.jdesktop.layout.GroupLayout ) {
-			"$horizontalGroup": "par l {seq {space :::p, par l {seq t {space :0:0:x, comp label6:::p::p, space :p:87:p}, seq t {par l {comp label3::l:p::p, comp label1::l:p::p}, space u::37:x, par l:::p {comp label4::::297:x, comp label2::::297:x}, space :::p}, seq l {comp label5:::p::p, space s:::p, comp label7::::298:x, space :::p}}}}"
-			"$verticalGroup": "par l {seq l {space :::p, comp label6:::p::p, space :p:9:p, par l {comp label5:::p::p, comp label7:::p::p}, space :::p, par b {comp label1::b:p::p, comp label2::b:p::p}, space :::p, par t {comp label3:::p::p, comp label4:::p:16:p}, space ::150:x}}"
+			"$horizontalGroup": "par l {seq {space :::p, par l {seq t {space :0:0:x, comp label6:::p::p, space :p:87:p}, seq l {comp label5:::p::p, space :p:18:p, comp label7::::298:x, space :::p}, seq t {par l {comp label1::l:p::p, comp label3::l:p::p}, space ::37:x, par l:::p {seq {comp label2:::p:297:p, space :::p}, comp label4:::::x}}, seq {comp label8:::p::p, space s:::p, comp label9::::304:x}}}}"
+			"$verticalGroup": "par l {seq l {space :::p, comp label6:::p::p, space :p:9:p, par b {comp label7::b:p::p, comp label5::b:p::p}, space :::p, par b {comp label1::b:p::p, comp label2::b:p::p}, space u:::p, par b {comp label8::b:p::p, comp label9::b:p::p}, space u:::p, par b {comp label3::b:p::p, comp label4::b:p:16:p}, space ::116:x}}"
 		} ) {
 			name: "this"
 			"title": "Cow Fighter V1.0"
@@ -38,6 +38,14 @@ new FormModel {
 			add( new FormComponent( "javax.swing.JLabel" ) {
 				name: "label7"
 				"text": "Foo"
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "label8"
+				"text": "Attemtpts:"
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "label9"
+				"text": "0"
 			} )
 		}, new FormLayoutConstraints( null ) {
 			"location": new java.awt.Point( 0, 0 )
