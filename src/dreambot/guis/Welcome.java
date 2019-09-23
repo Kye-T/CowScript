@@ -41,7 +41,9 @@ public class Welcome extends JFrame {
                 cowhide.isSelected(),
                 cook.isSelected(),
                 bank.isSelected(),
-                heal.isSelected()
+                heal.isSelected(),
+                bankFood.isSelected(),
+                makeFire.isSelected()
         );
 
         synchronized (this) {
@@ -56,8 +58,21 @@ public class Welcome extends JFrame {
         return config;
     }
 
+    public JCheckBox getMakeFire() {
+        return makeFire;
+    }
+
     private void button1ActionPerformed(ActionEvent e) {
-        startScript();
+        if(meat.isSelected()) {
+            if(makeFire.isSelected() || bankFood.isSelected()) {
+                startScript();
+                return;
+            } else {
+                JOptionPane.showMessageDialog(null, "Cooking is enabled, please select Make Fire or Bank Has Food.", "Oops, you're missing something", JOptionPane.ERROR_MESSAGE);
+            }
+        } else {
+            startScript();
+        }
     }
 
     private void label2MouseClicked(MouseEvent e) {
@@ -105,6 +120,14 @@ public class Welcome extends JFrame {
         label20 = new JLabel();
         heal = new JCheckBox();
         label21 = new JLabel();
+        label22 = new JLabel();
+        bankFood = new JCheckBox();
+        label23 = new JLabel();
+        label24 = new JLabel();
+        makeFire = new JCheckBox();
+        label25 = new JLabel();
+        label26 = new JLabel();
+        label27 = new JLabel();
 
         //======== this ========
         setTitle("Cow Fighter V1.1");
@@ -185,7 +208,7 @@ public class Welcome extends JFrame {
         label15.setForeground(new Color(0, 135, 255));
 
         //---- label16 ----
-        label16.setText("(Requires players lighting fires)");
+        label16.setText("(**Requires make fire or bank has food)");
         label16.setForeground(new Color(204, 0, 0));
 
         //---- label17 ----
@@ -207,6 +230,28 @@ public class Welcome extends JFrame {
         label21.setText("(Will heal at 40% health)");
         label21.setForeground(new Color(204, 0, 0));
 
+        //---- label22 ----
+        label22.setText("Bank has food");
+
+        //---- label23 ----
+        label23.setText("(Checks bank for food if cannot find fire source)");
+        label23.setForeground(new Color(204, 0, 0));
+
+        //---- label24 ----
+        label24.setText("Make Fire");
+
+        //---- label25 ----
+        label25.setText("(Requires tinderbox and axe in inventory on start)");
+        label25.setForeground(new Color(204, 0, 0));
+
+        //---- label26 ----
+        label26.setText("** Cooking meat will source other players fires, if not found it will make its own");
+        label26.setForeground(new Color(204, 0, 0));
+
+        //---- label27 ----
+        label27.setText("or visit the bank and source food inside it. (If no food, script waits till regen health)");
+        label27.setForeground(new Color(204, 0, 0));
+
         GroupLayout contentPaneLayout = new GroupLayout(contentPane);
         contentPane.setLayout(contentPaneLayout);
         contentPaneLayout.setHorizontalGroup(
@@ -216,75 +261,94 @@ public class Welcome extends JFrame {
                         .addGroup(contentPaneLayout.createSequentialGroup()
                             .addContainerGap()
                             .addComponent(label3)
-                            .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 235, Short.MAX_VALUE)
+                            .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(label1)
                             .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(label2))
                         .addGroup(contentPaneLayout.createSequentialGroup()
                             .addGroup(contentPaneLayout.createParallelGroup()
                                 .addGroup(contentPaneLayout.createSequentialGroup()
-                                    .addGap(40, 40, 40)
-                                    .addGroup(contentPaneLayout.createParallelGroup()
-                                        .addComponent(label7)
-                                        .addComponent(label8)
-                                        .addComponent(label13))
-                                    .addGap(29, 29, 29)
-                                    .addGroup(contentPaneLayout.createParallelGroup()
-                                        .addComponent(camAngles)
-                                        .addComponent(exp)
-                                        .addGroup(contentPaneLayout.createSequentialGroup()
-                                            .addComponent(sleeps)
-                                            .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                                            .addComponent(label18))))
-                                .addGroup(contentPaneLayout.createSequentialGroup()
-                                    .addGap(20, 20, 20)
-                                    .addGroup(contentPaneLayout.createParallelGroup()
-                                        .addComponent(label5)
-                                        .addComponent(label9)
-                                        .addComponent(label15)
-                                        .addGroup(contentPaneLayout.createSequentialGroup()
-                                            .addGap(22, 22, 22)
-                                            .addGroup(contentPaneLayout.createParallelGroup()
-                                                .addComponent(label4)
-                                                .addComponent(label11)
-                                                .addComponent(label10)
-                                                .addComponent(label12)
-                                                .addComponent(label14)
-                                                .addComponent(label20))
-                                            .addGap(94, 94, 94)
-                                            .addGroup(contentPaneLayout.createParallelGroup()
-                                                .addComponent(meat)
-                                                .addComponent(cowhide)
-                                                .addGroup(contentPaneLayout.createSequentialGroup()
-                                                    .addComponent(bones)
-                                                    .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                                                    .addComponent(bury)
-                                                    .addGap(18, 18, 18)
-                                                    .addComponent(label17))
-                                                .addGroup(contentPaneLayout.createSequentialGroup()
-                                                    .addGroup(contentPaneLayout.createParallelGroup()
-                                                        .addComponent(bank)
-                                                        .addComponent(cook)
-                                                        .addComponent(heal))
-                                                    .addGap(18, 18, 18)
-                                                    .addGroup(contentPaneLayout.createParallelGroup()
-                                                        .addComponent(label16)
-                                                        .addComponent(label19)
-                                                        .addComponent(label21)))))))
-                                .addGroup(contentPaneLayout.createSequentialGroup()
                                     .addGap(139, 139, 139)
                                     .addComponent(label6))
                                 .addGroup(contentPaneLayout.createSequentialGroup()
                                     .addGap(136, 136, 136)
                                     .addComponent(button1)))
-                            .addGap(0, 22, Short.MAX_VALUE)))
+                            .addGap(0, 157, Short.MAX_VALUE)))
                     .addContainerGap())
+                .addGroup(GroupLayout.Alignment.TRAILING, contentPaneLayout.createSequentialGroup()
+                    .addGap(0, 13, Short.MAX_VALUE)
+                    .addGroup(contentPaneLayout.createParallelGroup(GroupLayout.Alignment.TRAILING)
+                        .addGroup(contentPaneLayout.createParallelGroup()
+                            .addGroup(contentPaneLayout.createSequentialGroup()
+                                .addGap(20, 20, 20)
+                                .addGroup(contentPaneLayout.createParallelGroup()
+                                    .addComponent(label7)
+                                    .addComponent(label8)
+                                    .addComponent(label13))
+                                .addGap(29, 29, 29)
+                                .addGroup(contentPaneLayout.createParallelGroup()
+                                    .addComponent(camAngles)
+                                    .addComponent(exp)
+                                    .addGroup(contentPaneLayout.createSequentialGroup()
+                                        .addComponent(sleeps)
+                                        .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(label18))))
+                            .addComponent(label5)
+                            .addComponent(label9)
+                            .addComponent(label15)
+                            .addGroup(contentPaneLayout.createSequentialGroup()
+                                .addGap(22, 22, 22)
+                                .addGroup(contentPaneLayout.createParallelGroup()
+                                    .addComponent(label4)
+                                    .addComponent(label11)
+                                    .addComponent(label10)
+                                    .addComponent(label12)
+                                    .addComponent(label14)
+                                    .addComponent(label20)
+                                    .addComponent(label22)
+                                    .addComponent(label24))
+                                .addGap(94, 94, 94)
+                                .addGroup(contentPaneLayout.createParallelGroup()
+                                    .addComponent(meat)
+                                    .addComponent(cowhide)
+                                    .addGroup(contentPaneLayout.createSequentialGroup()
+                                        .addComponent(bones)
+                                        .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(bury)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(label17))
+                                    .addGroup(contentPaneLayout.createSequentialGroup()
+                                        .addGroup(contentPaneLayout.createParallelGroup()
+                                            .addComponent(bank)
+                                            .addComponent(cook)
+                                            .addComponent(heal))
+                                        .addGap(18, 18, 18)
+                                        .addGroup(contentPaneLayout.createParallelGroup()
+                                            .addComponent(label16)
+                                            .addComponent(label19)
+                                            .addComponent(label21)))
+                                    .addGroup(contentPaneLayout.createSequentialGroup()
+                                        .addComponent(bankFood)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(label23))
+                                    .addGroup(contentPaneLayout.createSequentialGroup()
+                                        .addComponent(makeFire)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(label25)))))
+                        .addGroup(contentPaneLayout.createParallelGroup()
+                            .addComponent(label27)
+                            .addComponent(label26)))
+                    .addGap(26, 26, 26))
         );
         contentPaneLayout.setVerticalGroup(
             contentPaneLayout.createParallelGroup()
                 .addGroup(GroupLayout.Alignment.TRAILING, contentPaneLayout.createSequentialGroup()
                     .addGap(10, 10, 10)
                     .addComponent(label6)
+                    .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(label26)
+                    .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(label27)
                     .addGap(18, 18, 18)
                     .addComponent(label5)
                     .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
@@ -346,7 +410,24 @@ public class Welcome extends JFrame {
                                 .addComponent(label20)
                                 .addComponent(heal)))
                         .addComponent(label21))
-                    .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
+                    .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                    .addGroup(contentPaneLayout.createParallelGroup()
+                        .addGroup(contentPaneLayout.createSequentialGroup()
+                            .addGroup(contentPaneLayout.createParallelGroup()
+                                .addComponent(label23)
+                                .addComponent(label22))
+                            .addGroup(contentPaneLayout.createParallelGroup()
+                                .addGroup(contentPaneLayout.createSequentialGroup()
+                                    .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(label24))
+                                .addGroup(contentPaneLayout.createSequentialGroup()
+                                    .addGap(8, 8, 8)
+                                    .addComponent(label25))))
+                        .addGroup(contentPaneLayout.createSequentialGroup()
+                            .addComponent(bankFood)
+                            .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(makeFire)))
+                    .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
                     .addComponent(button1, GroupLayout.PREFERRED_SIZE, 53, GroupLayout.PREFERRED_SIZE)
                     .addGap(18, 18, 18)
                     .addGroup(contentPaneLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
@@ -394,5 +475,13 @@ public class Welcome extends JFrame {
     private JLabel label20;
     private JCheckBox heal;
     private JLabel label21;
+    private JLabel label22;
+    private JCheckBox bankFood;
+    private JLabel label23;
+    private JLabel label24;
+    private JCheckBox makeFire;
+    private JLabel label25;
+    private JLabel label26;
+    private JLabel label27;
     // JFormDesigner - End of variables declaration  //GEN-END:variables
 }

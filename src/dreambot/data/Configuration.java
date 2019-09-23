@@ -10,8 +10,11 @@ public class Configuration {
     private boolean cookMeat;
     private boolean bank;
     private boolean heal;
+    private boolean doCheckBank;
+    private boolean doMakeFire;
 
-    public Configuration(boolean a, boolean b, boolean c, boolean d, boolean e, boolean f, boolean g, boolean h, boolean i) {
+    // TODO("Name conventionally")
+    public Configuration(boolean a, boolean b, boolean c, boolean d, boolean e, boolean f, boolean g, boolean h, boolean i, boolean j, boolean k) {
         changeCameraAngles = a;
         takeSleeps = b;
         checkXp = c;
@@ -21,6 +24,16 @@ public class Configuration {
         cookMeat = g;
         bank = h;
         heal = i;
+        doCheckBank = j;
+        doMakeFire = k;
+    }
+
+    public boolean isDoMakeFire() {
+        return doMakeFire;
+    }
+
+    public boolean isDoCheckBank() {
+        return doCheckBank;
     }
 
     public boolean isHeal() {

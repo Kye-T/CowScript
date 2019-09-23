@@ -227,8 +227,12 @@ public class Main extends Provider{
         if (getGameObjects().closest(x -> x.getID() == Cooking.getFireId()) != null) {
             setScriptPosition(ScriptPosition.COOKING);
         } else {
-            // TODO("Try to find some food in the bank")
-            // This will keep looping till it finds a fire otherwise
+            if(getConfiguration().isDoCheckBank()) {
+                // Check the bank for food
+            }
+            else if(getConfiguration().isDoMakeFire()) {
+                // Chop some trees and make a fire
+            }
         }
     }
 
