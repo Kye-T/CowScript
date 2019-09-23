@@ -115,8 +115,6 @@ public class Main extends Provider{
 
                 break;
             case LOOTING:
-                log("Starting to looting process...");
-
                 // Pick up all of the dropped items
                 Arrays.stream(Cows.getGroundIds()).forEach(id -> {
                     if (
@@ -125,13 +123,10 @@ public class Main extends Provider{
                                     || (Cows.isMeat(id) && getConfiguration().isLootMeat())
                     ) {
                         try {
-                            log("Attempting to loot...");
-                            getGroundItems().closest(x -> x.getID() == id).interact("Pick Up");
+                            getGroundItems().closest(x -> x.getID() == id).interact("Take");
                         } catch (Exception e) {
                             // Someone could of picked it up already, skip over the item
                         }
-                    } else {
-                        log("Looting is disabled for item " + id + "...");
                     }
                 });
                 setScriptPosition(ScriptPosition.WAITING);
