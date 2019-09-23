@@ -68,6 +68,9 @@ public class Main extends Provider{
 
     @Override
     public int onLoop() {
+        // Looks like the walker instance doesn't get updated with current API
+        walker = getProvider().getLibInstance(Walker.class);
+
         // Check for fire and inventory to be able to cook on
         searchForFire();
         // Update health in GUI
@@ -76,8 +79,7 @@ public class Main extends Provider{
         switch (getPosition()) {
             case WALKING:
                 gui.setCurrentTask("Walking to task...");
-                sleep(300, 500);
-                if (!walker.isAtArea(areaWalkingTo, walker.getSetTile())) {
+                if (!walker.isAtArea(areaWalkingTo, getLocalPlayer().getTile())) {
                     walker.walk();
                     break;
                 } else {
@@ -224,6 +226,9 @@ public class Main extends Provider{
 
         if (getGameObjects().closest(x -> x.getID() == Cooking.getFireId()) != null) {
             setScriptPosition(ScriptPosition.COOKING);
+        } else {
+            // TODO("Try to find some food in the bank")
+            // This will keep looping till it finds a fire otherwise
         }
     }
 

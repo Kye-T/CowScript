@@ -5,6 +5,7 @@ import dreambot.main.ScriptPosition;
 import org.dreambot.api.methods.Calculations;
 import org.dreambot.api.methods.map.Area;
 import org.dreambot.api.methods.map.Tile;
+import org.dreambot.api.wrappers.interactive.GameObject;
 
 import java.util.Arrays;
 
@@ -36,11 +37,21 @@ public class Cooking extends Library {
 
     public boolean cook() {
         try {
-            getProvider().getInventory().get(Cows.getMeat())
-                    .useOn(getProvider().getGameObjects().closest(x -> x.getID() == fireId));
+            GameObject fire = getProvider().getGameObjects().closest(x -> x.getID() == fireId);
+
+            if(fire != null) {
+                getProvider().getWalking().walkOnScreen(fire.getTile());
+                getProvider().sleepUntil(() -> !getProvider().getLocalPlayer().isMoving(), Walker.oneSecond * Calculations.random(4, 9));
+            }
+
+            try {
+                getProvider().getInventory().get(Cows.getMeat())
+                        .useOn(getProvider().getGameObjects().closest(x -> x.getID() == fireId));
+            } catch (Exception e) {
+                // Fire could of tarnished
+            }
 
             getProvider().sleepUntil(() -> !getProvider().getLocalPlayer().isAnimating(), Walker.oneSecond * Calculations.random(8, 19));
-
             getProvider().setScriptPosition(pa);
             return true;
         } catch (Exception e) {
