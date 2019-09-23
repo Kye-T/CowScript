@@ -207,10 +207,12 @@ public class Main extends Provider{
         }
 
         // Randomly search for fires if health isn't too low
-        if(getInventory().contains(x -> x.getID() == Cows.getMeat()) && getInventory().get(x -> x.getID() == Cows.getMeat()).getAmount() >= Calculations.random(3, 10)) {
-            gui.setCurrentTask("Searching for local fires...");
-            cookMeat();
-            return;
+        if(getInventory().contains(x -> x.getID() == Cows.getMeat()))  {
+            if(getInventory().get(x -> x.getID() == Cows.getMeat()).getAmount() >= Calculations.random(3, 10)) {
+                gui.setCurrentTask("Searching for local fires...");
+                cookMeat();
+                return;
+            }
         }
 
         // If all else fails, we can just revert back to waiting
