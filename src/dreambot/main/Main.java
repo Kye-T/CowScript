@@ -49,7 +49,7 @@ public class Main extends Provider{
     public void onStart() {
         setProvider(new Loader(new Reference<>(this)));
 
-        gui = new Tracker();
+        gui = new Tracker().setUsername(getLocalPlayer().getName()).setHealth(getLocalPlayer().getHealthPercent());
         fighter = getProvider().getLibInstance(Fighting.class);
 
         /* If player is not yet at location, walk there unless bank is full */
@@ -66,6 +66,8 @@ public class Main extends Provider{
     public int onLoop() {
         // Check for fire and inventory to be able to cook on
         checkForFire();
+        // Update health in GUI
+        gui.setHealth(getLocalPlayer().getHealthPercent());
         // Check for all possible script positions
         switch (getPosition()) {
             case WALKING:
