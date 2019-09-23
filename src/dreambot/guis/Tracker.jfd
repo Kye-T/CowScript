@@ -4,7 +4,7 @@ new FormModel {
 	contentType: "form/swing"
 	root: new FormRoot {
 		add( new FormWindow( "javax.swing.JFrame", new FormLayoutManager( class org.jdesktop.layout.GroupLayout ) {
-			"$horizontalGroup": "par l {seq {space :::p, par l {seq t {space :0:0:x, comp label6:::p::p, space :p:87:p}, seq l {comp label5:::p::p, space :p:18:p, comp label7::::298:x, space :::p}, seq t {comp label1:::p::p, space ::48:x, comp label2:::p:297:p, space :::p}, seq l {comp label3:::p::p, space ::180:x, comp label4:::::x}}}}"
+			"$horizontalGroup": "par l {seq {space :::p, par l {seq t {space :0:0:x, comp label6:::p::p, space :p:87:p}, seq l {comp label5:::p::p, space :p:18:p, comp label7::::298:x, space :::p}, seq t {par l {comp label1::l:p::p, comp label3::l:p::p}, space ::37:x, par l:::p {comp label2::::297:x, comp label4::::297:x}, space :::p}}}}"
 			"$verticalGroup": "par l {seq l {space :::p, comp label6:::p::p, space :p:9:p, par b {comp label7::b:p::p, comp label5::b:p::p}, space :::p, par b {comp label1::b:p::p, comp label2::b:p::p}, space :::p, par b {comp label3::b:p::p, comp label4::b:p:16:p}, space ::150:x}}"
 		} ) {
 			name: "this"
