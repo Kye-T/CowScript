@@ -36,9 +36,11 @@ public class Cooking extends Library {
 
     public boolean cook() {
         try {
-            getProvider().getInventory().get(Arrays.stream(Cows.getIds()).filter(id -> Cows.isMeat(id)).findFirst().getAsInt())
+            getProvider().getInventory().get(Cows.getMeat())
                     .useOn(getProvider().getGameObjects().closest(x -> x.getID() == fireId));
+
             getProvider().sleepUntil(() -> !getProvider().getLocalPlayer().isAnimating(), Walker.oneSecond * Calculations.random(8, 19));
+
             getProvider().setScriptPosition(pa);
             return true;
         } catch (Exception e) {

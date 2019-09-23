@@ -77,13 +77,16 @@ public class Main extends Provider{
             case WALKING:
                 gui.setCurrentTask("Walking to task...");
                 sleep(300, 500);
-                if (!walker.isAtArea(areaWalkingTo, walker.getSetTile())) walker.walk();
-                else {
+                if (!walker.isAtArea(areaWalkingTo, walker.getSetTile())) {
+                    walker.walk();
+                    break;
+                } else {
                     // If we hit the area and the inventory is full,
                     // we know we was going to the bank
                     if(getInventory().isFull()) {
                         gui.setCurrentTask("Initiating banking...");
                         getProvider().getLibInstance(Banking.class).bank();
+                        break;
                     }
 
                     setScriptPosition(ScriptPosition.WAITING);
@@ -204,7 +207,8 @@ public class Main extends Provider{
         }
 
         // If all else fails, we can just revert back to waiting
-        setScriptPosition(ScriptPosition.WAITING);
+        if(getPosition().equals(ScriptPosition.COOKING))
+            setScriptPosition(ScriptPosition.WAITING);
     }
 
     private void cookMeat() {
