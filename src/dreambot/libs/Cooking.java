@@ -51,7 +51,7 @@ public class Cooking extends Library {
                 getProvider().getInventory().get(Cows.getMeat())
                         .useOn(getProvider().getGameObjects().closest(x -> x.getID() == fireId));
             } catch (Exception e) {
-                // Fire could of tarnished
+                return false;
             }
 
             getProvider().sleepUntil(condition, Walker.oneSecond * Calculations.random(4, 11));
