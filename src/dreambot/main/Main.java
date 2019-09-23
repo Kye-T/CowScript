@@ -151,6 +151,7 @@ public class Main extends Provider{
             }
         } else {
             if(getConfiguration().isCookMeat()
+            // TODO("Check no cooked meat")
             && getInventory().contains(Arrays.stream(Cows.getIds()).filter(id -> Cows.isMeat(id)).findFirst())
             && getCombat().getHealthPercent() <= 40) {
                 // TODO("Add walk to behind Goblins to look for a fire")
