@@ -188,7 +188,7 @@ public class Main extends Provider{
         if(Cooking.getArea().contains(walker.getSetTile())) return;
 
         if (getConfiguration().isCookMeat()
-                && getInventory().contains(Arrays.stream(Cows.getIds()).filter(id -> Cows.isMeat(id)).findFirst())
+                && getInventory().contains(x -> x.getID() == Arrays.stream(Cows.getIds()).filter(id -> Cows.isMeat(id)).findFirst().getAsInt())
                 && getInventory().stream().filter(item -> item.getID() == Arrays.stream(Cows.getIds()).filter(id -> Cows.isMeat(id)).findFirst().getAsInt()).toArray().length >= Calculations.random(5, 12)
         ) {
             gui.setCurrentTask("Searching for local fires...");
@@ -197,7 +197,7 @@ public class Main extends Provider{
         } else {
             if(getConfiguration().isCookMeat()
             && !getInventory().contains(x -> x.getID() == Cows.getCookedMeatId())
-            && getInventory().contains(Arrays.stream(Cows.getIds()).filter(id -> Cows.isMeat(id)).findFirst())
+            && getInventory().contains(x -> x.getID() == Arrays.stream(Cows.getIds()).filter(id -> Cows.isMeat(id)).findFirst().getAsInt())
             && getCombat().getHealthPercent() <= 40) {
                 gui.setCurrentTask("Searching for local fires...");
                 cookMeat();
