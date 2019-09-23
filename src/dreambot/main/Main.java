@@ -120,9 +120,14 @@ public class Main extends Provider{
                     sleep(300, 500);
                 }
             case IN_COMBAT:
-                // Anti-Ban goes here
+                heal();
+
                 gui.setCurrentTask("In combat with a Cow...");
-                sleepUntil(() -> !getLocalPlayer().isInCombat(), Walker.oneMinute * Calculations.random(3, 5));
+                sleepUntil(() -> !getLocalPlayer().isInCombat() || getCombat().getHealthPercent() <= 40, Walker.oneSecond * Calculations.random(3, 7));
+
+                heal();
+
+                if(getLocalPlayer().isInCombat()) sleepUntil(() -> !getLocalPlayer().isInCombat(), Walker.oneSecond * Calculations.random(15, 30));
 
                 // If no longer in combat and looting enabled, start looting
                 if (!getLocalPlayer().isInCombat()) {
@@ -216,6 +221,17 @@ public class Main extends Provider{
 
         if (getGameObjects().closest(x -> x.getID() == Cooking.getFireId()) != null) {
             setScriptPosition(ScriptPosition.COOKING);
+        }
+    }
+
+    public void heal() {
+        // If healing is enabled and player drops below 40 health
+        // Heal until health is above 60-100 or/and food has ran out
+        if(getConfiguration().isHeal() && getCombat().getHealthPercent() <= 40 && getInventory().contains(x -> x.getID() == Cows.getCookedMeatId())) {
+            while(getInventory().contains(x -> x.getID() == Cows.getCookedMeatId() && getCombat().getHealthPercent() <= Calculations.random(60, 100))) {
+                getInventory().get(x -> x.getID() == Cows.getCookedMeatId()).useOn(getLocalPlayer());
+                sleep(Calculations.random(300, 500), Calculations.random(600, 900));
+            }
         }
     }
 
