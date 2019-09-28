@@ -87,6 +87,10 @@ public class Main extends Provider{
             case WALKING:
                 gui.setCurrentTask("Walking to " + walker.getSetTile().getX() + ", " + walker.getSetTile().getY() + "...");
                 if (!walker.getSetTile().getArea(5).contains(getLocalPlayer().getTile()) || !walker.isAtTile()) {
+
+                    if(getWalking().getRunEnergy() >= 20)
+                        getWalking().toggleRun();
+
                     walker.walk();
                     break;
                 } else {
@@ -120,6 +124,11 @@ public class Main extends Provider{
                 NPC cow;
                 gui.setCurrentTask("Searching for a Cow...");
                 if((cow = getNpcs().closest(x -> !x.isInCombat() && x.getID() == Arrays.stream(Cows.getIds()).findAny().getAsInt())) != null) {
+                    cow.interact("Attack");
+                    setScriptPosition(ScriptPosition.IN_COMBAT);
+                    break;
+                }
+                else if((cow = getNpcs().closest(x -> !x.isInCombat() && x.getName().equalsIgnoreCase("Cow"))) != null) {
                     cow.interact("Attack");
                     setScriptPosition(ScriptPosition.IN_COMBAT);
                     break;
