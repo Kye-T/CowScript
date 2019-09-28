@@ -390,7 +390,7 @@ public class Tracker extends JFrame {
     public void updateXp(SkillTracker st) {
         skills.forEach(x -> {
             x.setXpPerHour(st.getGainedExperiencePerHour(x.getSkillType()));
-            x.setLevelsGained(st.getStartLevel(x.getSkillType()), st.getGainedLevels(x.getSkillType()));
+            x.setLevelsGained(st.getStartLevel(x.getSkillType()) + st.getGainedLevels(x.getSkillType()), st.getGainedLevels(x.getSkillType()));
             x.setXpGained((int) st.getGainedExperience(x.getSkillType()));
             x.setXpTillLevel(st.getStartExperience(x.getSkillType()));
         });
