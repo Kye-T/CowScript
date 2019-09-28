@@ -44,7 +44,7 @@ import java.util.Arrays;
 )
 
 public class Main extends Provider{
-    private Walker walker;
+    public Walker walker;
     private Tracker gui;
 
     @Override
@@ -72,8 +72,13 @@ public class Main extends Provider{
         // Looks like the walker instance doesn't get updated with current API
         walker = getProvider().getLibInstance(Walker.class);
 
-        // TODO("If Inventory is full, lets bury em all"
+        if(getProvider().getLibInstance(Banking.class).getBankLocation().getArea(10).contains(getLocalPlayer().getTile())) {
+            if(getConfiguration().isDoCheckBank())
+                getProvider().getLibInstance(Banking.class).bankOut();
 
+            if(getConfiguration().isBank())
+                getProvider().getLibInstance(Banking.class).bank();
+        }
 
         // Update GUI with SkillTracker
                 gui.updateXp(new SkillTrackerV2(getSkillTracker()), getSkills());
@@ -84,7 +89,6 @@ public class Main extends Provider{
         if(needsToHeal() && getConfiguration().isDoCheckBank()) {
             if(!getPosition().equals(ScriptPosition.WALKING)) {
                 walker.setTile(getProvider().getLibInstance(Banking.class).getBankLocation());
-                getProvider().getLibInstance(Banking.class).bankOut();
                 setScriptPosition(ScriptPosition.WALKING);
                 return 500;
             }
