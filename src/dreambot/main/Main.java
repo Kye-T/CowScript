@@ -147,12 +147,12 @@ public class Main extends Provider{
                 gui.setCurrentTask("In combat with a Cow...");
                 sleepUntil(() -> !getLocalPlayer().isInCombat() || getCombat().getHealthPercent() <= 40, Walker.oneSecond * Calculations.random(3, 7));
 
-                heal();
+                boolean h = heal();
 
                 if(getLocalPlayer().isInCombat()) sleepUntil(() -> !getLocalPlayer().isInCombat(), Walker.oneSecond * Calculations.random(15, 30));
 
                 // If no longer in combat and looting enabled, start looting
-                if (!getLocalPlayer().isInCombat()) {
+                if (!getLocalPlayer().isInCombat() && !h) {
                     if (getConfiguration().isLootBones() || getConfiguration().isLootCowHide() || getConfiguration().isLootMeat()) {
                         setScriptPosition(ScriptPosition.LOOTING);
                     }
@@ -267,7 +267,7 @@ public class Main extends Provider{
         }
     }
 
-    private void heal() {
+    private boolean heal() {
         // If healing is enabled and player drops below 40 health
         // Heal until health is above 60-100 or/and food has ran out
         if(getConfiguration().isHeal() && getCombat().getHealthPercent() <= 40 && getInventory().contains(x -> x.getID() == Cows.getCookedMeatId())) {
@@ -275,7 +275,9 @@ public class Main extends Provider{
                 getInventory().get(x -> x.getID() == Cows.getCookedMeatId()).interact("Eat");
                 sleep(Calculations.random(300, 500), Calculations.random(600, 900));
             }
+            return true;
         }
+        return false;
     }
 
 }
