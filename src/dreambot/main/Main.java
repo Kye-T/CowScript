@@ -270,7 +270,7 @@ public class Main extends Provider{
         // Heal until health is above 60-100 or/and food has ran out
         if(getConfiguration().isHeal() && getCombat().getHealthPercent() <= 40 && getInventory().contains(x -> x.getID() == Cows.getCookedMeatId())) {
             while(getInventory().contains(x -> x.getID() == Cows.getCookedMeatId()) && getCombat().getHealthPercent() <= Calculations.random(60, 100)) {
-                getInventory().get(x -> x.getID() == Cows.getCookedMeatId()).useOn(getLocalPlayer());
+                getInventory().get(x -> x.getID() == Cows.getCookedMeatId()).interact("Eat");
                 sleep(Calculations.random(300, 500), Calculations.random(600, 900));
             }
         }
