@@ -76,7 +76,7 @@ public class Main extends Provider{
 
 
         // Update GUI with SkillTracker
-        gui.updateXp((SkillTrackerV2) getSkillTracker(), getSkills());
+                gui.updateXp(new SkillTrackerV2(getSkillTracker()), getSkills());
 
         // Check for fire and inventory to be able to cook on
         searchForFire();
