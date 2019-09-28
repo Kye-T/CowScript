@@ -44,7 +44,6 @@ import java.util.Arrays;
 
 public class Main extends Provider{
     private Walker walker;
-    private Fighting fighter;
     private Tracker gui;
 
     @Override
@@ -52,7 +51,7 @@ public class Main extends Provider{
         setProvider(new Loader(new Reference<>(this)));
 
         gui = new Tracker().setUsername(getLocalPlayer().getName()).setHealth(getCombat().getHealthPercent() + "/" + getLocalPlayer().getHealthPercent() + "%");
-        fighter = getProvider().getLibInstance(Fighting.class);
+        Fighting fighter = getProvider().getLibInstance(Fighting.class);
 
         setScriptPosition(ScriptPosition.WAITING);
 
@@ -87,13 +86,13 @@ public class Main extends Provider{
         switch (getPosition()) {
             case WALKING:
                 gui.setCurrentTask("Walking to " + walker.getSetTile().getX() + ", " + walker.getSetTile().getY() + "...");
-                if (!walker.isAtArea(walker.getSetTile().getArea(3), getLocalPlayer().getTile()) || walker.isAtTile(walker.getSetTile())) {
+                if (!walker.isAtArea(walker.getSetTile().getArea(3), getLocalPlayer().getTile()) || walker.isAtTile()) {
                     walker.walk();
                     break;
                 } else {
                     // If we hit the area and the inventory is full,
                     // we know we was going to the bank
-                    if(getInventory().isFull()) {
+                    if(getInventory().isFull() && getConfiguration().isBank()) {
                         gui.setCurrentTask("Initiating banking...");
                         getProvider().getLibInstance(Banking.class).bank();
                         break;
@@ -104,7 +103,7 @@ public class Main extends Provider{
                 break;
             case WAITING:
                 // Check if we should bank
-                if(getInventory().isFull()) {
+                if(getInventory().isFull() && getConfiguration().isBank()) {
                     gui.setCurrentTask("Initiating banking...");
                     walker.setTile(getProvider().getLibInstance(Banking.class).getBankLocation());
                     setScriptPosition(ScriptPosition.WALKING);
@@ -152,6 +151,10 @@ public class Main extends Provider{
 
                 break;
             case LOOTING:
+                if(getInventory().isFull()) {
+                    setScriptPosition(ScriptPosition.WAITING);
+                    break;
+                }
                 gui.setCurrentTask("Looting cow remains...");
                 // Pick up all of the dropped items
                 Arrays.stream(Cows.getGroundIds()).forEach(id -> {
