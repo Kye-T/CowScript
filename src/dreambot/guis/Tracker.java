@@ -5,8 +5,10 @@
 package dreambot.guis;
 
 import dreambot.data.SkillTrack;
+import dreambot.data.SkillTrackerV2;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.skills.SkillTracker;
+import org.dreambot.api.methods.skills.Skills;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -387,12 +389,12 @@ public class Tracker extends JFrame {
         return this;
     }
 
-    public void updateXp(SkillTracker st) {
+    public void updateXp(SkillTrackerV2 st, Skills s) {
         skills.forEach(x -> {
             x.setXpPerHour(st.getGainedExperiencePerHour(x.getSkillType()));
             x.setLevelsGained(st.getStartLevel(x.getSkillType()) + st.getGainedLevels(x.getSkillType()), st.getGainedLevels(x.getSkillType()));
             x.setXpGained((int) st.getGainedExperience(x.getSkillType()));
-            x.setXpTillLevel(st.getStartExperience(x.getSkillType()));
+            x.setXpTillLevel(st.getXpTillNextLevel(x.getSkillType(), s));
         });
 
         updateGuiXP();

@@ -1,6 +1,7 @@
 package dreambot.main;
 
 import dreambot.data.Cows;
+import dreambot.data.SkillTrackerV2;
 import dreambot.guis.Tracker;
 import dreambot.libs.Banking;
 import dreambot.libs.Cooking;
@@ -75,7 +76,7 @@ public class Main extends Provider{
 
 
         // Update GUI with SkillTracker
-        gui.updateXp(getSkillTracker());
+        gui.updateXp((SkillTrackerV2) getSkillTracker(), getSkills());
 
         // Check for fire and inventory to be able to cook on
         searchForFire();
