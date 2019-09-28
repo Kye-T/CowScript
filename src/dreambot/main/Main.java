@@ -88,7 +88,7 @@ public class Main extends Provider{
                 gui.setCurrentTask("Walking to " + walker.getSetTile().getX() + ", " + walker.getSetTile().getY() + "...");
                 if (!walker.getSetTile().getArea(5).contains(getLocalPlayer().getTile()) || !walker.isAtTile()) {
 
-                    if(getWalking().getRunEnergy() >= 20)
+                    if(getWalking().getRunEnergy() >= 20 && !getWalking().isRunEnabled())
                         getWalking().toggleRun();
 
                     walker.walk();
