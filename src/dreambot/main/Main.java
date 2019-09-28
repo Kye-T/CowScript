@@ -217,22 +217,22 @@ public class Main extends Provider{
         if(Cooking.getArea().contains(walker.getSetTile()) || !getConfiguration().isCookMeat()) return;
 
         // We already have food we can use
-        if (getInventory().contains(x -> x.getID() == Cows.getCookedMeatId())) return;
+        if (getInventory().all().stream().filter(x -> x.getID() == Cows.getCookedMeatId()).findFirst().isPresent()) return;
 
-        if(getCombat().getHealthPercent() <= 40 && getInventory().contains(x -> x.getID() == Cows.getMeat())) {
+        if(getCombat().getHealthPercent() <= 40 && getInventory().all().stream().filter(x -> x.getID() == Cows.getMeat()).findFirst().isPresent()) {
             gui.setCurrentTask("Searching for local fires...");
             cookMeat();
             return;
         }
 
         // Randomly search for fires if health isn't too low
-        if(getInventory().contains(x -> x.getID() == Cows.getMeat()))  {
-            if(getInventory().get(x -> x.getID() == Cows.getMeat()).getAmount() >= Calculations.random(3, 10)) {
+        getInventory().all().stream().filter(x -> x.getID() == Cows.getMeat()).findFirst().ifPresent(x -> {
+            if(getInventory().get(o -> x.getID() == Cows.getMeat()).getAmount() >= Calculations.random(3, 10)) {
                 gui.setCurrentTask("Searching for local fires...");
                 cookMeat();
                 return;
             }
-        }
+        });
 
         // If all else fails, we can just revert back to waiting
         if(getPosition().equals(ScriptPosition.COOKING))
