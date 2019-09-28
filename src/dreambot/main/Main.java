@@ -86,8 +86,8 @@ public class Main extends Provider{
         // Check for all possible script positions
         switch (getPosition()) {
             case WALKING:
-                gui.setCurrentTask("Walking to task...");
-                if (!walker.isAtArea(areaWalkingTo, getLocalPlayer().getTile()) || walker.isAtTile(walker.getSetTile())) {
+                gui.setCurrentTask("Walking to " + walker.getSetTile().getX() + ", " + walker.getSetTile().getY() + "...");
+                if (!walker.isAtArea(walker.getSetTile().getArea(3), getLocalPlayer().getTile()) || walker.isAtTile(walker.getSetTile())) {
                     walker.walk();
                     break;
                 } else {
@@ -134,8 +134,6 @@ public class Main extends Provider{
                 setScriptPosition(ScriptPosition.WALKING);
                 break;
             case IN_COMBAT:
-                heal();
-
                 gui.setCurrentTask("In combat with a Cow...");
                 sleepUntil(() -> !getLocalPlayer().isInCombat() || getCombat().getHealthPercent() <= 40, Walker.oneSecond * Calculations.random(3, 7));
 
@@ -150,6 +148,7 @@ public class Main extends Provider{
                     }
                 }
                 // Start Anti-Ban process via configuration
+                // If not done, continue cycle
 
                 break;
             case LOOTING:
@@ -258,7 +257,7 @@ public class Main extends Provider{
         // If healing is enabled and player drops below 40 health
         // Heal until health is above 60-100 or/and food has ran out
         if(getConfiguration().isHeal() && getCombat().getHealthPercent() <= 40 && getInventory().contains(x -> x.getID() == Cows.getCookedMeatId())) {
-            while(getInventory().contains(x -> x.getID() == Cows.getCookedMeatId() && getCombat().getHealthPercent() <= Calculations.random(60, 100))) {
+            while(getInventory().contains(x -> x.getID() == Cows.getCookedMeatId()) && getCombat().getHealthPercent() <= Calculations.random(60, 100)) {
                 getInventory().get(x -> x.getID() == Cows.getCookedMeatId()).useOn(getLocalPlayer());
                 sleep(Calculations.random(300, 500), Calculations.random(600, 900));
             }
