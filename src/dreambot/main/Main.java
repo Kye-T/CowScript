@@ -149,6 +149,8 @@ public class Main extends Provider{
 
                 boolean h = heal();
 
+                sleepUntil(() -> getLocalPlayer().isInCombat(), Walker.oneSecond * Calculations.random(4, 8));
+
                 if(getLocalPlayer().isInCombat()) sleepUntil(() -> !getLocalPlayer().isInCombat(), Walker.oneSecond * Calculations.random(15, 30));
 
                 // If no longer in combat and looting enabled, start looting
