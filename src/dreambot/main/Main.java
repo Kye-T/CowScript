@@ -51,14 +51,13 @@ public class Main extends Provider{
         setProvider(new Loader(new Reference<>(this)));
 
         gui = new Tracker().setUsername(getLocalPlayer().getName()).setHealth(getCombat().getHealthPercent() + "/" + getLocalPlayer().getHealthPercent() + "%");
-        Fighting fighter = getProvider().getLibInstance(Fighting.class);
 
         setScriptPosition(ScriptPosition.WAITING);
 
         /* If player is not yet at location, walk there unless bank is full */
         if (!(walker = getProvider().getLibInstance(Walker.class)).isAtArea(getLocalPlayer().getTile())) {
-            walker.setTile(getInventory().isFull() ? getProvider().getLibInstance(Banking.class).getBankLocation() : walker.getRandomTile());
-            areaWalkingTo = getInventory().isFull() ? getProvider().getLibInstance(Banking.class).getBankLocation().getArea(3) : walker.getRandomTile().getArea(3);
+            walker.setTile(getInventory().isFull() && getConfiguration().isBank() ? getProvider().getLibInstance(Banking.class).getBankLocation() : walker.getRandomTile());
+            areaWalkingTo = getInventory().isFull() && getConfiguration().isBank() ? getProvider().getLibInstance(Banking.class).getBankLocation().getArea(3) : walker.getRandomTile().getArea(3);
             setScriptPosition(ScriptPosition.WALKING);
         }
 
