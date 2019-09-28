@@ -106,6 +106,8 @@ public class Main extends Provider{
                 }
                 break;
             case WAITING:
+                heal();
+
                 // Check if we should bank
                 if(getInventory().isFull() && getConfiguration().isBank()) {
                     gui.setCurrentTask("Initiating banking...");
