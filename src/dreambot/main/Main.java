@@ -80,6 +80,7 @@ public class Main extends Provider{
 
         // Check for fire and inventory to be able to cook on
         searchForFire();
+
         // Update health in GUI
         gui.setHealth(getCombat().getHealthPercent() + "/" + getLocalPlayer().getHealthPercent() + "%");
         // Check for all possible script positions
@@ -217,22 +218,22 @@ public class Main extends Provider{
         if(Cooking.getArea().contains(walker.getSetTile()) || !getConfiguration().isCookMeat()) return;
 
         // We already have food we can use
-        if (getInventory().all().stream().filter(x -> x.getID() == Cows.getCookedMeatId()).findFirst().isPresent()) return;
+        if (getInventory().contains(x -> x.getID() == Cows.getCookedMeatId())) return;
 
-        if(getCombat().getHealthPercent() <= 40 && getInventory().all().stream().filter(x -> x.getID() == Cows.getMeat()).findFirst().isPresent()) {
+        if(getCombat().getHealthPercent() <= 40 && getInventory().contains(Cows.getMeat())) {
             gui.setCurrentTask("Searching for local fires...");
             cookMeat();
             return;
         }
 
         // Randomly search for fires if health isn't too low
-        getInventory().all().stream().filter(x -> x.getID() == Cows.getMeat()).findFirst().ifPresent(x -> {
-            if(getInventory().get(o -> x.getID() == Cows.getMeat()).getAmount() >= Calculations.random(3, 10)) {
+        if(getInventory().contains(Cows.getMeat())) {
+            if(getInventory().get(x -> x.getID() == Cows.getMeat()).getAmount() >= Calculations.random(3, 10)) {
                 gui.setCurrentTask("Searching for local fires...");
                 cookMeat();
                 return;
             }
-        });
+        }
 
         // If all else fails, we can just revert back to waiting
         if(getPosition().equals(ScriptPosition.COOKING))
@@ -241,8 +242,9 @@ public class Main extends Provider{
 
     private void cookMeat() {
         // Walk to the area if not there
-        if(!walker.isAtArea(Cooking.getArea(), getLocalPlayer().getTile())) {
+        if(!walker.getSetTile().getArea(5).contains(getLocalPlayer().getTile()) || !walker.isAtTile()) {
             gui.setCurrentTask("Walking to any local fire area...");
+            sleep(Calculations.random(700, 1000), Calculations.random(1500, 2000));
             walker.setTile(Cooking.getSearchTile());
             areaWalkingTo = Cooking.getSearchTile().getArea(3);
             setScriptPosition(ScriptPosition.WALKING);
@@ -253,7 +255,6 @@ public class Main extends Provider{
             setScriptPosition(ScriptPosition.COOKING);
         } else {
             if(getConfiguration().isDoCheckBank()) {
-                // TODO("Check the bank for food")
                 if(!getPosition().equals(ScriptPosition.WALKING) && !walker.isAtArea(getProvider().getLibInstance(Banking.class).getBankLocation().getArea(3), getLocalPlayer().getTile())) {
                     walker.setTile(getProvider().getLibInstance(Banking.class).getBankLocation());
                     areaWalkingTo = getProvider().getLibInstance(Banking.class).getBankLocation().getArea(3);
