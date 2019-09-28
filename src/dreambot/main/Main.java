@@ -85,7 +85,7 @@ public class Main extends Provider{
         switch (getPosition()) {
             case WALKING:
                 gui.setCurrentTask("Walking to " + walker.getSetTile().getX() + ", " + walker.getSetTile().getY() + "...");
-                if (!walker.isAtArea(walker.getSetTile().getArea(3), getLocalPlayer().getTile()) || walker.isAtTile()) {
+                if (!walker.getSetTile().getArea(5).contains(getLocalPlayer().getTile()) || !walker.isAtTile()) {
                     walker.walk();
                     break;
                 } else {
