@@ -1,5 +1,6 @@
 package dreambot.libs;
 
+import dreambot.data.Cows;
 import org.dreambot.api.methods.Calculations;
 import org.dreambot.api.methods.map.Tile;
 
@@ -12,6 +13,14 @@ public class Banking extends Library {
         getProvider().getBank().open();
         getProvider().sleepUntil(() -> getProvider().getBank().isOpen(), Walker.oneMinute);
         getProvider().getBank().depositAllItems();
+        getProvider().getBank().close();
+        getProvider().sleepUntil(() -> !getProvider().getBank().isOpen(), Walker.oneSecond * Calculations.random(5, 17));
+    }
+
+    public void bankOut() {
+        getProvider().getBank().open();
+        getProvider().sleepUntil(() -> getProvider().getBank().isOpen(), Walker.oneMinute);
+        getProvider().getBank().withdrawAll(Cows.getCookedMeatId());
         getProvider().getBank().close();
         getProvider().sleepUntil(() -> !getProvider().getBank().isOpen(), Walker.oneSecond * Calculations.random(5, 17));
     }

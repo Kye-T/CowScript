@@ -7,6 +7,7 @@ import dreambot.libs.Cooking;
 import dreambot.libs.Fighting;
 import dreambot.libs.Walker;
 import org.dreambot.api.methods.Calculations;
+import org.dreambot.api.methods.container.impl.bank.Bank;
 import org.dreambot.api.methods.map.Area;
 import org.dreambot.api.script.Category;
 import org.dreambot.api.script.ScriptManifest;
@@ -72,6 +73,9 @@ public class Main extends Provider{
         // Looks like the walker instance doesn't get updated with current API
         walker = getProvider().getLibInstance(Walker.class);
 
+        // TODO("If Inventory is full, lets bury em all"
+
+
         // Update GUI with SkillTracker
         gui.updateXp(getSkillTracker());
 
@@ -83,7 +87,7 @@ public class Main extends Provider{
         switch (getPosition()) {
             case WALKING:
                 gui.setCurrentTask("Walking to task...");
-                if (!walker.isAtArea(areaWalkingTo, getLocalPlayer().getTile())) {
+                if (!walker.isAtArea(areaWalkingTo, getLocalPlayer().getTile()) || walker.isAtTile(walker.getSetTile())) {
                     walker.walk();
                     break;
                 } else {
@@ -234,15 +238,23 @@ public class Main extends Provider{
             setScriptPosition(ScriptPosition.COOKING);
         } else {
             if(getConfiguration().isDoCheckBank()) {
-                // Check the bank for food
+                // TODO("Check the bank for food")
+                if(!getPosition().equals(ScriptPosition.WALKING) && !walker.isAtArea(getProvider().getLibInstance(Banking.class).getBankLocation().getArea(3), getLocalPlayer().getTile())) {
+                    walker.setTile(getProvider().getLibInstance(Banking.class).getBankLocation());
+                    areaWalkingTo = getProvider().getLibInstance(Banking.class).getBankLocation().getArea(3);
+                    setScriptPosition(ScriptPosition.WALKING);
+                } else {
+                    getProvider().getLibInstance(Banking.class).bankOut(); // Need to add new method for getting food
+                }
             }
             else if(getConfiguration().isDoMakeFire()) {
-                // Chop some trees and make a fire
+                // TODO("Check inv has items")
+                // TODO("Chop some trees and make a fire")
             }
         }
     }
 
-    public void heal() {
+    private void heal() {
         // If healing is enabled and player drops below 40 health
         // Heal until health is above 60-100 or/and food has ran out
         if(getConfiguration().isHeal() && getCombat().getHealthPercent() <= 40 && getInventory().contains(x -> x.getID() == Cows.getCookedMeatId())) {
