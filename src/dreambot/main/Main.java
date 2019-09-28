@@ -125,12 +125,12 @@ public class Main extends Provider{
                 // Find a Cow
                 NPC cow;
                 gui.setCurrentTask("Searching for a Cow...");
-                if((cow = getNpcs().closest(x -> !x.isInCombat() && x.getID() == Arrays.stream(Cows.getIds()).findAny().getAsInt())) != null) {
+                if((cow = getNpcs().closest(x -> !x.isInCombat() && x.getName().equalsIgnoreCase("Cow"))) != null) {
                     cow.interact("Attack");
                     setScriptPosition(ScriptPosition.IN_COMBAT);
                     break;
                 }
-                else if((cow = getNpcs().closest(x -> !x.isInCombat() && x.getName().equalsIgnoreCase("Cow"))) != null) {
+                else if((cow = getNpcs().closest(x -> !x.isInCombat() && x.getID() == Arrays.stream(Cows.getIds()).findAny().getAsInt())) != null) {
                     cow.interact("Attack");
                     setScriptPosition(ScriptPosition.IN_COMBAT);
                     break;

@@ -20,6 +20,7 @@ public class Banking extends Library {
     public void bankOut() {
         getProvider().getBank().open();
         getProvider().sleepUntil(() -> getProvider().getBank().isOpen(), Walker.oneMinute);
+        getProvider().getBank().depositAllItems();
         getProvider().getBank().withdrawAll(Cows.getCookedMeatId());
         getProvider().getBank().close();
         getProvider().sleepUntil(() -> !getProvider().getBank().isOpen(), Walker.oneSecond * Calculations.random(5, 17));
