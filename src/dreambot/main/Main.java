@@ -72,7 +72,7 @@ public class Main extends Provider{
         // Looks like the walker instance doesn't get updated with current API
         walker = getProvider().getLibInstance(Walker.class);
 
-        if(getProvider().getLibInstance(Banking.class).getBankLocation().getArea(10).contains(getLocalPlayer().getTile())) {
+        if(!getPosition().equals(ScriptPosition.WALKING) && getProvider().getLibInstance(Banking.class).getBankLocation().getArea(10).contains(getLocalPlayer().getTile())) {
             if(getConfiguration().isDoCheckBank())
                 getProvider().getLibInstance(Banking.class).bankOut();
 
@@ -85,14 +85,6 @@ public class Main extends Provider{
 
         // Check for fire and inventory to be able to cook on
         if(searchForFire()) return 500;
-
-        if(needsToHeal() && getConfiguration().isDoCheckBank()) {
-            if(!getPosition().equals(ScriptPosition.WALKING)) {
-                walker.setTile(getProvider().getLibInstance(Banking.class).getBankLocation());
-                setScriptPosition(ScriptPosition.WALKING);
-                return 500;
-            }
-        }
 
         // Update health in GUI
         gui.setHealth(getCombat().getHealthPercent() + "/" + getLocalPlayer().getHealthPercent() + "%");
@@ -165,6 +157,16 @@ public class Main extends Provider{
                 sleepUntil(() -> !getLocalPlayer().isInCombat() || getCombat().getHealthPercent() <= 40, Walker.oneSecond * Calculations.random(3, 7));
 
                 boolean h = heal();
+
+                if(!h) {
+                    if(needsToHeal() && getConfiguration().isDoCheckBank()) {
+                        if(!getPosition().equals(ScriptPosition.WALKING)) {
+                            walker.setTile(getProvider().getLibInstance(Banking.class).getBankLocation());
+                            setScriptPosition(ScriptPosition.WALKING);
+                            return 500;
+                        }
+                    }
+                }
 
                 sleepUntil(() -> getLocalPlayer().isInCombat(), Walker.oneSecond * Calculations.random(4, 8));
 
